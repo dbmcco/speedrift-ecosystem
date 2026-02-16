@@ -1,47 +1,98 @@
 # Speedrift Ecosystem
 
-Canonical suite repo for the Speedrift drift-control ecosystem.
+Speedrift is a Workgraph-first control system for agentic software development.
 
-This repo is the top-level map and operator guide. Each drift module remains a discrete CLI repo.
+## Status
 
-## Why Speedrift
+`speedrift` is under active development.
 
-Agentic coding now outpaces human supervision. In that gap, projects accumulate:
+- Interfaces and defaults will continue evolving.
+- Some modules may move faster than others.
+- The goal right now is real-world dogfooding with strong feedback loops, not frozen APIs.
 
-- code drift (fix-on-fix behavior and local workarounds)
-- spec drift (implementation diverges from agreed intent)
-- task/intent drift (agents optimize for the moment instead of the plan)
-- loop drift (self-healing or guardrail layers can recurse without clear bounds)
+## North Star
 
-Speedrift exists to preserve development speed while continuously countersteering toward shared intent.
-The core design is:
+Build software at agent speed without losing shared intent.
 
-- **Workgraph as spine**: one shared source of task truth and dependency flow.
-- **Driftdriver as pit wall**: unified routing, policy, and wrapper orchestration.
-- **Drift lanes as control loops**: focused checks that log, redirect, and spawn follow-ups instead of hard-blocking by default.
+That means:
 
-This lets teams run parallel agents with lower supervision overhead and fewer hidden divergence costs.
+- plans, code, specs, and decisions stay synchronized over time
+- teams can run multiple agents in parallel with bounded risk
+- drift is surfaced and redirected early, not discovered at release time
 
-## Story Deck
+## Why This Exists
 
-For the narrative, ecosystem map, and workflow graphics:
+Agentic coding can produce code faster than humans can supervise. The result is drift:
 
-- `docs/decks/speedrift-ecosystem-story.html`
+- code drift: fix-on-fix behavior and local workarounds
+- spec drift: implementation diverges from agreed behavior
+- intent drift: tasks optimize for the moment instead of the mission
+- loop drift: self-healing/guardrail logic can recurse without clear limits
 
-### Embedded Preview
+Speedrift is designed to keep momentum high while continuously countersteering toward alignment.
 
-[Open the full interactive deck (GitHub Pages)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)
+## Mental Model
 
-Fallback (repo file view): [docs/decks/speedrift-ecosystem-story.html](docs/decks/speedrift-ecosystem-story.html)
+Think in motorsports terms:
 
-| Slide | Preview |
-|---|---|
-| Why now | [![Speedrift story slide 1](docs/decks/previews/slide-1.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1) |
-| Ecosystem architecture | [![Speedrift story slide 3](docs/decks/previews/slide-3.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3) |
-| Workflow loop | [![Speedrift story slide 4](docs/decks/previews/slide-4.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4) |
-| Loop-safe controls | [![Speedrift story slide 7](docs/decks/previews/slide-7.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7) |
+- **Track**: Workgraph is the shared track and lap plan (tasks, deps, loops).
+- **Pit wall**: `driftdriver` is race control (policy, orchestration, wrappers).
+- **Telemetry**: drift lanes produce signals and evidence.
+- **Countersteer**: findings create logs and follow-up tasks instead of silent bloat.
+- **Pit stop**: recovery loops (`therapydrift`, `redrift`) re-sync before failures compound.
 
-## Naming Model
+## Usage Process
+
+### 1) Start A New Project
+
+```bash
+pipx install git+https://github.com/dbmcco/driftdriver.git
+pipx install git+https://github.com/dbmcco/coredrift.git
+pipx install git+https://github.com/dbmcco/specdrift.git
+pipx install git+https://github.com/dbmcco/datadrift.git
+pipx install git+https://github.com/dbmcco/depsdrift.git
+pipx install git+https://github.com/dbmcco/uxdrift.git
+pipx install git+https://github.com/dbmcco/therapydrift.git
+pipx install git+https://github.com/dbmcco/yagnidrift.git
+pipx install git+https://github.com/dbmcco/redrift.git
+
+wg init
+driftdriver install --wrapper-mode portable --with-uxdrift --with-therapydrift --with-yagnidrift --with-redrift
+./.workgraph/coredrift ensure-contracts --apply
+```
+
+### 2) Resume A Project
+
+```bash
+driftdriver install --wrapper-mode portable --with-uxdrift --with-therapydrift --with-yagnidrift --with-redrift
+./.workgraph/coredrift ensure-contracts --apply
+```
+
+### 3) Run The Day-To-Day Loop
+
+For each claimed task:
+
+```bash
+./.workgraph/drifts check --task <task_id> --write-log --create-followups
+```
+
+Optional continuous mode:
+
+```bash
+./.workgraph/drifts orchestrate --write-log --create-followups
+```
+
+### 4) Run Brownfield Rebuilds
+
+Use `redrift` when rebuilding toward v2 with phased artifacts:
+
+```bash
+./.workgraph/redrift wg execute --task <root_task_id> --v2-repo <target_path> --write-log --phase-checks
+```
+
+## Ecosystem Map
+
+Naming:
 
 - Suite name: `speedrift` (ecosystem)
 - Orchestrator CLI: `driftdriver`
@@ -49,9 +100,7 @@ Fallback (repo file view): [docs/decks/speedrift-ecosystem-story.html](docs/deck
 - Optional lanes: `specdrift`, `datadrift`, `depsdrift`, `uxdrift`, `therapydrift`, `yagnidrift`
 - Rebuild lane: `redrift`
 
-This is intentional: `driftdriver` coordinates lanes; suite naming (`speedrift`) is separate from lane naming (`coredrift`).
-
-## Repo Map
+Repos:
 
 | Repo | Role | URL |
 |---|---|---|
@@ -65,64 +114,37 @@ This is intentional: `driftdriver` coordinates lanes; suite naming (`speedrift`)
 | yagnidrift | overbuild and complexity drift | https://github.com/dbmcco/yagnidrift |
 | redrift | v1->v2 re-spec/rebuild lane | https://github.com/dbmcco/redrift |
 
-## Quick Start (Any App Repo)
+## Story Deck
 
-```bash
-# install core
-pipx install git+https://github.com/dbmcco/driftdriver.git
-pipx install git+https://github.com/dbmcco/coredrift.git
+Live deck:
 
-# install optional lanes as needed
-pipx install git+https://github.com/dbmcco/specdrift.git
-pipx install git+https://github.com/dbmcco/datadrift.git
-pipx install git+https://github.com/dbmcco/depsdrift.git
-pipx install git+https://github.com/dbmcco/uxdrift.git
-pipx install git+https://github.com/dbmcco/therapydrift.git
-pipx install git+https://github.com/dbmcco/yagnidrift.git
-pipx install git+https://github.com/dbmcco/redrift.git
+- https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html
 
-# inside your app repo
-wg init
-driftdriver install --wrapper-mode portable --with-uxdrift --with-therapydrift --with-yagnidrift --with-redrift
-./.workgraph/coredrift ensure-contracts --apply
-```
+Fallback:
 
-For each claimed task, run:
+- `docs/decks/speedrift-ecosystem-story.html`
 
-```bash
-./.workgraph/drifts check --task <task_id> --write-log --create-followups
-```
+Embedded preview:
 
-Continuous pit-wall mode:
+| Slide | Preview |
+|---|---|
+| Why now | [![Speedrift story slide 1](docs/decks/previews/slide-1.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1) |
+| Ecosystem architecture | [![Speedrift story slide 3](docs/decks/previews/slide-3.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3) |
+| Workflow loop | [![Speedrift story slide 4](docs/decks/previews/slide-4.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4) |
+| Loop-safe controls | [![Speedrift story slide 7](docs/decks/previews/slide-7.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7) |
 
-```bash
-./.workgraph/drifts orchestrate --write-log --create-followups
-```
+## Migration Note
 
-## Operational Rule
-
-Use the suite through `./.workgraph/drifts` for coordinated runs.
-Use lane CLIs directly when you explicitly want a single-lane workflow.
-
-## Migration (speedrift lane -> coredrift)
-
-If an older repo still has `./.workgraph/speedrift`, reinstall wrappers:
-
-```bash
-driftdriver install --wrapper-mode portable --with-uxdrift --with-therapydrift --with-yagnidrift --with-redrift
-```
-
-Then run:
+Legacy lane repo `dbmcco/speedrift` is retained as a deprecation pointer.
+If a repo still has `./.workgraph/speedrift`, reinstall wrappers and run:
 
 ```bash
 ./.workgraph/coredrift ensure-contracts --apply
 ```
-
-Legacy lane repo `dbmcco/speedrift` is retained only as a deprecation pointer.
 
 ## Validation
 
-Run ecosystem-level checks from this repo:
+Run ecosystem-level verification from this repo:
 
 ```bash
 ./scripts/verify_ecosystem.sh
