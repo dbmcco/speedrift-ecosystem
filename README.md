@@ -4,6 +4,30 @@ Canonical suite repo for the Speedrift drift-control ecosystem.
 
 This repo is the top-level map and operator guide. Each drift module remains a discrete CLI repo.
 
+## Why Speedrift
+
+Agentic coding now outpaces human supervision. In that gap, projects accumulate:
+
+- code drift (fix-on-fix behavior and local workarounds)
+- spec drift (implementation diverges from agreed intent)
+- task/intent drift (agents optimize for the moment instead of the plan)
+- loop drift (self-healing or guardrail layers can recurse without clear bounds)
+
+Speedrift exists to preserve development speed while continuously countersteering toward shared intent.
+The core design is:
+
+- **Workgraph as spine**: one shared source of task truth and dependency flow.
+- **Driftdriver as pit wall**: unified routing, policy, and wrapper orchestration.
+- **Drift lanes as control loops**: focused checks that log, redirect, and spawn follow-ups instead of hard-blocking by default.
+
+This lets teams run parallel agents with lower supervision overhead and fewer hidden divergence costs.
+
+## Story Deck
+
+For the narrative, ecosystem map, and workflow graphics:
+
+- `docs/decks/speedrift-ecosystem-story.html`
+
 ## Naming Model
 
 - Suite name: `speedrift` (ecosystem)

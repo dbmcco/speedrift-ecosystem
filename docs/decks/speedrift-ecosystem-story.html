@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Speedrift Ecosystem: Why It Exists</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;700&family=Space+Grotesk:wght@400;500;700&display=swap");
+
+      :root {
+        --bg-1: #f6efe4;
+        --bg-2: #efe5d7;
+        --ink: #14181d;
+        --ink-soft: #4e5b69;
+        --line: rgba(20, 24, 29, 0.14);
+        --accent: #ef4e2a;
+        --accent-2: #ff7a2f;
+        --sage: #8ea36e;
+        --panel: rgba(255, 255, 255, 0.74);
+        --font-display: "Fraunces", "Iowan Old Style", "Palatino", serif;
+        --font-body: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: var(--font-body);
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 16%, rgba(239, 78, 42, 0.16), transparent 42%),
+          radial-gradient(circle at 88% 6%, rgba(142, 163, 110, 0.2), transparent 36%),
+          linear-gradient(180deg, var(--bg-1), var(--bg-2));
+        display: grid;
+        place-items: center;
+        padding: 3vh 3vw 8vh;
+      }
+
+      .deck {
+        position: relative;
+        width: min(1220px, 94vw);
+        height: min(740px, 78vh);
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transform: translateY(12px) scale(0.986);
+        transition: opacity 320ms ease, transform 320ms ease;
+        pointer-events: none;
+      }
+
+      .slide.active {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+
+      .panel {
+        height: 100%;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        box-shadow: 0 24px 54px rgba(20, 24, 29, 0.14);
+        padding: clamp(22px, 3vw, 42px);
+        display: grid;
+        gap: clamp(12px, 2vh, 20px);
+        overflow: hidden;
+      }
+
+      .layout-title {
+        align-content: center;
+      }
+
+      .layout-split {
+        grid-template-columns: 1.08fr 0.92fr;
+        align-items: center;
+      }
+
+      .layout-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-content: start;
+      }
+
+      .layout-flow {
+        grid-template-columns: 1fr;
+        align-content: start;
+      }
+
+      .eyebrow {
+        font-size: 0.7rem;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-display);
+        margin: 0;
+        line-height: 1.06;
+      }
+
+      h1 {
+        font-size: clamp(2.6rem, 5vw, 4.4rem);
+      }
+
+      h2 {
+        font-size: clamp(1.9rem, 3.3vw, 3rem);
+      }
+
+      p {
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.48;
+        font-size: clamp(0.97rem, 1.25vw, 1.15rem);
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 0.82rem;
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.8);
+        display: grid;
+        gap: 8px;
+      }
+
+      .card h3 {
+        font-size: 1.05rem;
+      }
+
+      .card p {
+        font-size: 0.9rem;
+      }
+
+      .accent {
+        color: var(--accent);
+      }
+
+      .rail {
+        border-left: 4px solid var(--accent);
+        padding-left: 12px;
+      }
+
+      .metric-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .metric {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.84);
+        padding: 14px;
+      }
+
+      .metric .num {
+        font-size: 2rem;
+        line-height: 1;
+        font-family: var(--font-display);
+      }
+
+      .metric .label {
+        margin-top: 6px;
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+      }
+
+      .diagram-shell {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.68));
+        padding: 8px;
+      }
+
+      svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .step {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.82);
+        text-align: center;
+      }
+
+      .step strong {
+        display: block;
+        font-size: 0.85rem;
+      }
+
+      .step span {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--ink-soft);
+      }
+
+      .footer {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 2.2vh;
+        width: min(1220px, 94vw);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.83rem;
+        color: var(--ink-soft);
+      }
+
+      .kbd {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 4px 8px;
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      @media (max-width: 900px) {
+        body {
+          padding: 0;
+          align-items: stretch;
+        }
+        .deck {
+          width: 100vw;
+          height: 100vh;
+        }
+        .panel {
+          border-radius: 0;
+          padding: 18px;
+        }
+        .layout-split,
+        .layout-grid {
+          grid-template-columns: 1fr;
+        }
+        .steps,
+        .metric-row {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer {
+          width: 100vw;
+          padding: 0 14px;
+          bottom: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck" id="deck">
+      <section class="slide active">
+        <div class="panel layout-title">
+          <div class="eyebrow">Speedrift Ecosystem</div>
+          <h1>Agentic dev is fast. <span class="accent">Alignment is slower.</span></h1>
+          <p>
+            Speedrift exists to keep intent, specs, tasks, and code synchronized while agents run at full pace.
+            Workgraph is the spine, driftdriver is the pit wall, and drifts are specialized control loops.
+          </p>
+          <div class="chips">
+            <span class="chip">Workgraph-first</span>
+            <span class="chip">Model-mediated</span>
+            <span class="chip">Advisory not blocking</span>
+            <span class="chip">Human-light operation</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="panel layout-split">
+          <div>
+            <div class="eyebrow">The Why</div>
+            <h2>The drift tax compounds before humans can review.</h2>
+            <p class="rail">Agents patch around surprises and local errors, creating fix-on-fix behavior.</p>
+            <div class="metric-row">
+              <div class="metric">
+                <div class="num">4</div>
+                <div class="label">Major drift classes: code, spec, intent, dependency</div>
+              </div>
+              <div class="metric">
+                <div class="num">3</div>
+                <div class="label">Failure patterns: fallback creep, guardrail bloat, forked assumptions</div>
+              </div>
+              <div class="metric">
+                <div class="num">1</div>
+                <div class="label">Goal: one synchronized project graph, continuously</div>
+              </div>
+            </div>
+          </div>
+          <div class="diagram-shell">
+            <svg viewBox="0 0 560 360" role="img" aria-label="Drift pressure diagram">
+              <defs>
+                <linearGradient id="heat" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#ffb074" />
+                  <stop offset="100%" stop-color="#ef4e2a" />
+                </linearGradient>
+              </defs>
+              <rect x="24" y="20" width="512" height="320" rx="18" fill="#fff9f5" stroke="#d8c8b8" />
+              <line x1="80" y1="286" x2="500" y2="286" stroke="#8f7d6c" stroke-width="2" />
+              <line x1="80" y1="286" x2="80" y2="64" stroke="#8f7d6c" stroke-width="2" />
+              <text x="88" y="82" font-size="13" fill="#6a5d50">Drift load</text>
+              <text x="430" y="306" font-size="13" fill="#6a5d50">Time</text>
+              <path d="M80 270 C160 238, 220 212, 290 186 C350 164, 400 126, 500 78" fill="none" stroke="url(#heat)" stroke-width="8" stroke-linecap="round" />
+              <circle cx="220" cy="214" r="9" fill="#ef4e2a" />
+              <circle cx="320" cy="176" r="10" fill="#ef4e2a" />
+              <circle cx="428" cy="128" r="11" fill="#ef4e2a" />
+              <text x="150" y="246" font-size="12" fill="#5a4a3f">small patch</text>
+              <text x="274" y="165" font-size="12" fill="#5a4a3f">local workaround</text>
+              <text x="402" y="110" font-size="12" fill="#5a4a3f">system divergence</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="panel layout-split">
+          <div>
+            <div class="eyebrow">Architecture</div>
+            <h2>Workgraph spine + orchestrated drift lanes.</h2>
+            <p>Driftdriver always runs <strong>coredrift</strong>, then only runs relevant specialist lanes by task fences.</p>
+            <div class="chips">
+              <span class="chip">coredrift</span>
+              <span class="chip">specdrift</span>
+              <span class="chip">datadrift</span>
+              <span class="chip">depsdrift</span>
+              <span class="chip">uxdrift</span>
+              <span class="chip">therapydrift</span>
+              <span class="chip">yagnidrift</span>
+              <span class="chip">redrift</span>
+            </div>
+          </div>
+          <div class="diagram-shell">
+            <svg viewBox="0 0 640 420" role="img" aria-label="Ecosystem architecture map">
+              <defs>
+                <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a7a6b" />
+                </marker>
+              </defs>
+              <rect x="212" y="24" width="216" height="52" rx="14" fill="#fff5eb" stroke="#d8c4b0" />
+              <text x="320" y="56" text-anchor="middle" font-size="15" fill="#3f3328">Workgraph (Spine)</text>
+
+              <rect x="210" y="112" width="220" height="58" rx="14" fill="#fff" stroke="#cfb8a1" />
+              <text x="320" y="136" text-anchor="middle" font-size="14" fill="#2e2b28">driftdriver</text>
+              <text x="320" y="154" text-anchor="middle" font-size="11" fill="#6c5f52">policy + wrappers + orchestration</text>
+
+              <line x1="320" y1="76" x2="320" y2="112" stroke="#8a7a6b" stroke-width="2.2" marker-end="url(#arr)" />
+
+              <rect x="42" y="224" width="130" height="46" rx="12" fill="#fff" stroke="#d7c4b4" />
+              <text x="107" y="252" text-anchor="middle" font-size="12">coredrift</text>
+
+              <rect x="190" y="224" width="130" height="46" rx="12" fill="#fff" stroke="#d7c4b4" />
+              <text x="255" y="252" text-anchor="middle" font-size="12">specdrift</text>
+
+              <rect x="338" y="224" width="130" height="46" rx="12" fill="#fff" stroke="#d7c4b4" />
+              <text x="403" y="252" text-anchor="middle" font-size="12">datadrift</text>
+
+              <rect x="486" y="224" width="130" height="46" rx="12" fill="#fff" stroke="#d7c4b4" />
+              <text x="551" y="252" text-anchor="middle" font-size="12">depsdrift</text>
+
+              <rect x="116" y="304" width="130" height="46" rx="12" fill="#fff" stroke="#d7c4b4" />
+              <text x="181" y="332" text-anchor="middle" font-size="12">uxdrift</text>
+
+              <rect x="264" y="304" width="130" height="46" rx="12" fill="#fff" stroke="#d7c4b4" />
+              <text x="329" y="332" text-anchor="middle" font-size="12">therapydrift</text>
+
+              <rect x="412" y="304" width="130" height="46" rx="12" fill="#fff" stroke="#d7c4b4" />
+              <text x="477" y="332" text-anchor="middle" font-size="12">yagnidrift</text>
+
+              <rect x="264" y="370" width="130" height="40" rx="12" fill="#fff0e8" stroke="#d9b8a0" />
+              <text x="329" y="395" text-anchor="middle" font-size="12">redrift (v2 lane)</text>
+
+              <line x1="320" y1="170" x2="107" y2="224" stroke="#8a7a6b" stroke-width="1.8" marker-end="url(#arr)" />
+              <line x1="320" y1="170" x2="255" y2="224" stroke="#8a7a6b" stroke-width="1.8" marker-end="url(#arr)" />
+              <line x1="320" y1="170" x2="403" y2="224" stroke="#8a7a6b" stroke-width="1.8" marker-end="url(#arr)" />
+              <line x1="320" y1="170" x2="551" y2="224" stroke="#8a7a6b" stroke-width="1.8" marker-end="url(#arr)" />
+              <line x1="320" y1="170" x2="181" y2="304" stroke="#8a7a6b" stroke-width="1.8" marker-end="url(#arr)" />
+              <line x1="320" y1="170" x2="329" y2="304" stroke="#8a7a6b" stroke-width="1.8" marker-end="url(#arr)" />
+              <line x1="320" y1="170" x2="477" y2="304" stroke="#8a7a6b" stroke-width="1.8" marker-end="url(#arr)" />
+              <line x1="329" y1="350" x2="329" y2="370" stroke="#8a7a6b" stroke-width="1.8" marker-end="url(#arr)" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="panel layout-flow">
+          <div class="eyebrow">Workflow Loop</div>
+          <h2>Default operating rhythm for humans and agents.</h2>
+          <div class="steps">
+            <div class="step"><strong>1. Task Contract</strong><span>Objective, touch, non-goals in Workgraph</span></div>
+            <div class="step"><strong>2. Drift Check</strong><span>`./.workgraph/drifts check --task …`</span></div>
+            <div class="step"><strong>3. Build Fast</strong><span>Parallel agent execution</span></div>
+            <div class="step"><strong>4. Redirect</strong><span>Logs + follow-ups instead of silent bloat</span></div>
+            <div class="step"><strong>5. Re-sync</strong><span>Loop closes before merge/release</span></div>
+          </div>
+          <div class="diagram-shell">
+            <svg viewBox="0 0 980 280" role="img" aria-label="Workflow loop">
+              <defs>
+                <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a6a5a" />
+                </marker>
+              </defs>
+              <rect x="22" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
+              <text x="103" y="98" text-anchor="middle" font-size="13">Workgraph task</text>
+              <text x="103" y="116" text-anchor="middle" font-size="11" fill="#6f6255">contract + deps</text>
+
+              <rect x="214" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
+              <text x="295" y="98" text-anchor="middle" font-size="13">driftdriver</text>
+              <text x="295" y="116" text-anchor="middle" font-size="11" fill="#6f6255">policy + routing</text>
+
+              <rect x="406" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
+              <text x="487" y="98" text-anchor="middle" font-size="13">drift lanes</text>
+              <text x="487" y="116" text-anchor="middle" font-size="11" fill="#6f6255">coredrift + optionals</text>
+
+              <rect x="598" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
+              <text x="679" y="98" text-anchor="middle" font-size="13">wg log + followups</text>
+              <text x="679" y="116" text-anchor="middle" font-size="11" fill="#6f6255">redirect, no hard stop</text>
+
+              <rect x="790" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
+              <text x="871" y="98" text-anchor="middle" font-size="13">next agent pass</text>
+              <text x="871" y="116" text-anchor="middle" font-size="11" fill="#6f6255">same graph, tighter scope</text>
+
+              <line x1="184" y1="100" x2="214" y2="100" stroke="#7a6a5a" stroke-width="2" marker-end="url(#arr2)" />
+              <line x1="376" y1="100" x2="406" y2="100" stroke="#7a6a5a" stroke-width="2" marker-end="url(#arr2)" />
+              <line x1="568" y1="100" x2="598" y2="100" stroke="#7a6a5a" stroke-width="2" marker-end="url(#arr2)" />
+              <line x1="760" y1="100" x2="790" y2="100" stroke="#7a6a5a" stroke-width="2" marker-end="url(#arr2)" />
+              <path d="M 871 148 C 870 222, 150 222, 102 148" fill="none" stroke="#ef4e2a" stroke-width="3" marker-end="url(#arr2)" />
+              <text x="490" y="246" text-anchor="middle" font-size="12" fill="#8f3e2a">Continuous countersteer loop</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="panel layout-grid">
+          <div>
+            <div class="eyebrow">Module Roles</div>
+            <h2>One ecosystem, specialized control loops.</h2>
+            <p>Use all lanes through `drifts` by default. Run lanes directly when a task needs focused diagnostics.</p>
+          </div>
+          <article class="card">
+            <h3>coredrift</h3>
+            <p>Always-on baseline drift telemetry and redirect actions.</p>
+          </article>
+          <article class="card">
+            <h3>specdrift + datadrift + depsdrift</h3>
+            <p>Keep contract/spec, schema, and lockfiles in sync with implementation.</p>
+          </article>
+          <article class="card">
+            <h3>uxdrift</h3>
+            <p>Evidence-first UX checks using browser automation and optional LLM critique.</p>
+          </article>
+          <article class="card">
+            <h3>therapydrift + yagnidrift</h3>
+            <p>Bound loop recursion and reduce speculative complexity creep.</p>
+          </article>
+          <article class="card">
+            <h3>redrift</h3>
+            <p>Brownfield v1→v2 lane with phased artifacts and structured checkpoint commits.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="panel layout-split">
+          <div>
+            <div class="eyebrow">Redrift Lane</div>
+            <h2>Rebuild without losing graph discipline.</h2>
+            <p>
+              Redrift creates phase tasks, copies relevant fences, executes suite checks per phase, and keeps all decisions
+              visible in Workgraph.
+            </p>
+            <div class="chips">
+              <span class="chip">analyze</span>
+              <span class="chip">respec</span>
+              <span class="chip">design</span>
+              <span class="chip">build</span>
+            </div>
+          </div>
+          <div class="diagram-shell">
+            <svg viewBox="0 0 560 340" role="img" aria-label="Redrift phase conveyor">
+              <rect x="28" y="130" width="104" height="70" rx="12" fill="#fff" stroke="#d5c3b0" />
+              <text x="80" y="168" text-anchor="middle" font-size="12">analyze</text>
+              <rect x="154" y="130" width="104" height="70" rx="12" fill="#fff" stroke="#d5c3b0" />
+              <text x="206" y="168" text-anchor="middle" font-size="12">respec</text>
+              <rect x="280" y="130" width="104" height="70" rx="12" fill="#fff" stroke="#d5c3b0" />
+              <text x="332" y="168" text-anchor="middle" font-size="12">design</text>
+              <rect x="406" y="130" width="104" height="70" rx="12" fill="#fff" stroke="#d5c3b0" />
+              <text x="458" y="168" text-anchor="middle" font-size="12">build</text>
+              <line x1="132" y1="165" x2="154" y2="165" stroke="#7e6e5f" stroke-width="2" />
+              <line x1="258" y1="165" x2="280" y2="165" stroke="#7e6e5f" stroke-width="2" />
+              <line x1="384" y1="165" x2="406" y2="165" stroke="#7e6e5f" stroke-width="2" />
+              <path d="M80 114 C 146 56, 390 56, 458 114" fill="none" stroke="#ef4e2a" stroke-width="3" />
+              <text x="270" y="50" text-anchor="middle" font-size="12" fill="#7e3b2c">Artifacts + checks gate each transition</text>
+              <path d="M458 216 C390 274, 146 274, 80 216" fill="none" stroke="#8ea36e" stroke-width="3" />
+              <text x="270" y="300" text-anchor="middle" font-size="12" fill="#4e5f3e">follow-ups and therapy loops keep v2 stable</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="panel layout-split">
+          <div>
+            <div class="eyebrow">Principles</div>
+            <h2>Fast, supervised-by-design, and loop-safe.</h2>
+            <div class="card">
+              <h3>No hard blocks by default</h3>
+              <p>Findings become logs and deterministic follow-up tasks, not silent divergence or dead-stop workflows.</p>
+            </div>
+            <div class="card">
+              <h3>Model-mediated decisions</h3>
+              <p>Contracts and fences encode intent where agents execute, reducing memory drift across sessions.</p>
+            </div>
+            <div class="card">
+              <h3>Bounded recursion</h3>
+              <p>Cooldowns, action budgets, and circuit breakers prevent endless self-healing loops.</p>
+            </div>
+          </div>
+          <div class="diagram-shell">
+            <svg viewBox="0 0 560 340" role="img" aria-label="Control principles">
+              <circle cx="278" cy="170" r="104" fill="#fff" stroke="#d5c0ab" />
+              <circle cx="278" cy="170" r="66" fill="#fff5ec" stroke="#e4c2a7" />
+              <text x="278" y="166" text-anchor="middle" font-size="14">driftdriver</text>
+              <text x="278" y="185" text-anchor="middle" font-size="11" fill="#6e5f51">policy core</text>
+              <rect x="54" y="72" width="124" height="56" rx="12" fill="#fff" stroke="#d5c0ab" />
+              <text x="116" y="103" text-anchor="middle" font-size="11">advisory outputs</text>
+              <rect x="382" y="72" width="124" height="56" rx="12" fill="#fff" stroke="#d5c0ab" />
+              <text x="444" y="103" text-anchor="middle" font-size="11">task followups</text>
+              <rect x="54" y="212" width="124" height="56" rx="12" fill="#fff" stroke="#d5c0ab" />
+              <text x="116" y="243" text-anchor="middle" font-size="11">cooldown/budgets</text>
+              <rect x="382" y="212" width="124" height="56" rx="12" fill="#fff" stroke="#d5c0ab" />
+              <text x="444" y="243" text-anchor="middle" font-size="11">circuit breakers</text>
+              <line x1="178" y1="100" x2="214" y2="132" stroke="#877663" stroke-width="2" />
+              <line x1="382" y1="100" x2="342" y2="132" stroke="#877663" stroke-width="2" />
+              <line x1="178" y1="242" x2="214" y2="206" stroke="#877663" stroke-width="2" />
+              <line x1="382" y1="242" x2="342" y2="206" stroke="#877663" stroke-width="2" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="panel layout-title">
+          <div class="eyebrow">Starter Kit</div>
+          <h2>How friends should use it on day one.</h2>
+          <div class="card">
+            <p><strong>1.</strong> Install `driftdriver` + `coredrift`, add optional lanes as needed.</p>
+            <p><strong>2.</strong> In app repo: `wg init` then `driftdriver install ...`</p>
+            <p><strong>3.</strong> Start tasks with <code>./.workgraph/drifts check --task &lt;task-id&gt; --write-log --create-followups</code></p>
+            <p><strong>4.</strong> For brownfield rebuilds, run `redrift wg execute` in a v2 workspace.</p>
+          </div>
+          <div class="chips">
+            <span class="chip">Open-source lanes</span>
+            <span class="chip">Workgraph-native</span>
+            <span class="chip">Designed for parallel agents</span>
+          </div>
+          <p>Speedrift is the control system for building fast without abandoning intent.</p>
+        </div>
+      </section>
+    </main>
+
+    <div class="footer">
+      <div>Speedrift Ecosystem Story Deck</div>
+      <div>
+        <span class="kbd">←</span>
+        <span class="kbd">→</span>
+        <span class="kbd">Space</span>
+      </div>
+    </div>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      let index = 0;
+
+      function render() {
+        slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+      }
+
+      function next() {
+        index = Math.min(index + 1, slides.length - 1);
+        render();
+      }
+
+      function prev() {
+        index = Math.max(index - 1, 0);
+        render();
+      }
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === " " || event.key === "PageDown") {
+          event.preventDefault();
+          next();
+        } else if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          prev();
+        } else if (event.key === "Home") {
+          index = 0;
+          render();
+        } else if (event.key === "End") {
+          index = slides.length - 1;
+          render();
+        }
+      });
+    </script>
+  </body>
+</html>
