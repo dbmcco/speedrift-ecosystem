@@ -1,0 +1,39 @@
+schema = 1
+suite = "speedrift"
+orchestrator = "driftdriver"
+
+[repos.driftdriver]
+role = "orchestrator"
+url = "https://github.com/dbmcco/driftdriver"
+
+[repos.speedrift]
+role = "baseline"
+url = "https://github.com/dbmcco/speedrift"
+
+[repos.specdrift]
+role = "lane"
+url = "https://github.com/dbmcco/specdrift"
+
+[repos.datadrift]
+role = "lane"
+url = "https://github.com/dbmcco/datadrift"
+
+[repos.depsdrift]
+role = "lane"
+url = "https://github.com/dbmcco/depsdrift"
+
+[repos.uxdrift]
+role = "lane"
+url = "https://github.com/dbmcco/uxdrift"
+
+[repos.therapydrift]
+role = "lane"
+url = "https://github.com/dbmcco/therapydrift"
+
+[repos.yagnidrift]
+role = "lane"
+url = "https://github.com/dbmcco/yagnidrift"
+
+[repos.redrift]
+role = "lane"
+url = "https://github.com/dbmcco/redrift"
