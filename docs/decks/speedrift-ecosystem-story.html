@@ -600,8 +600,22 @@
       const slides = Array.from(document.querySelectorAll(".slide"));
       let index = 0;
 
+      function parseInitialIndex() {
+        const params = new URLSearchParams(window.location.search);
+        const fromQuery = Number.parseInt(params.get("slide") || "", 10);
+        if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= slides.length) {
+          return fromQuery - 1;
+        }
+        const fromHash = Number.parseInt((window.location.hash || "").replace("#", ""), 10);
+        if (Number.isInteger(fromHash) && fromHash >= 1 && fromHash <= slides.length) {
+          return fromHash - 1;
+        }
+        return 0;
+      }
+
       function render() {
         slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+        window.location.hash = String(index + 1);
       }
 
       function next() {
@@ -629,6 +643,9 @@
           render();
         }
       });
+
+      index = parseInitialIndex();
+      render();
     </script>
   </body>
 </html>

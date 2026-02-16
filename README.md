@@ -28,6 +28,17 @@ For the narrative, ecosystem map, and workflow graphics:
 
 - `docs/decks/speedrift-ecosystem-story.html`
 
+### Embedded Preview
+
+[Open the full interactive deck](docs/decks/speedrift-ecosystem-story.html)
+
+| Slide | Preview |
+|---|---|
+| Why now | ![Speedrift story slide 1](docs/decks/previews/slide-1.png) |
+| Ecosystem architecture | ![Speedrift story slide 3](docs/decks/previews/slide-3.png) |
+| Workflow loop | ![Speedrift story slide 4](docs/decks/previews/slide-4.png) |
+| Loop-safe controls | ![Speedrift story slide 7](docs/decks/previews/slide-7.png) |
+
 ## Naming Model
 
 - Suite name: `speedrift` (ecosystem)
