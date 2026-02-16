@@ -30,14 +30,16 @@ For the narrative, ecosystem map, and workflow graphics:
 
 ### Embedded Preview
 
-[Open the full interactive deck](docs/decks/speedrift-ecosystem-story.html)
+[Open the full interactive deck (GitHub Pages)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)
+
+Fallback (repo file view): [docs/decks/speedrift-ecosystem-story.html](docs/decks/speedrift-ecosystem-story.html)
 
 | Slide | Preview |
 |---|---|
-| Why now | ![Speedrift story slide 1](docs/decks/previews/slide-1.png) |
-| Ecosystem architecture | ![Speedrift story slide 3](docs/decks/previews/slide-3.png) |
-| Workflow loop | ![Speedrift story slide 4](docs/decks/previews/slide-4.png) |
-| Loop-safe controls | ![Speedrift story slide 7](docs/decks/previews/slide-7.png) |
+| Why now | [![Speedrift story slide 1](docs/decks/previews/slide-1.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1) |
+| Ecosystem architecture | [![Speedrift story slide 3](docs/decks/previews/slide-3.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3) |
+| Workflow loop | [![Speedrift story slide 4](docs/decks/previews/slide-4.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4) |
+| Loop-safe controls | [![Speedrift story slide 7](docs/decks/previews/slide-7.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7) |
 
 ## Naming Model
 
