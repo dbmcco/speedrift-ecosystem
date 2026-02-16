@@ -5,7 +5,7 @@ ROOT="${ROOT:-/Users/braydon/projects/experiments}"
 REPOS=(
   speedrift-ecosystem
   driftdriver
-  speedrift
+  coredrift
   redrift
   specdrift
   datadrift

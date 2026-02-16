@@ -6,9 +6,9 @@ orchestrator = "driftdriver"
 role = "orchestrator"
 url = "https://github.com/dbmcco/driftdriver"
 
-[repos.speedrift]
+[repos.coredrift]
 role = "baseline"
-url = "https://github.com/dbmcco/speedrift"
+url = "https://github.com/dbmcco/coredrift"
 
 [repos.specdrift]
 role = "lane"
