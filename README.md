@@ -67,6 +67,22 @@ Continuous pit-wall mode:
 Use the suite through `./.workgraph/drifts` for coordinated runs.
 Use lane CLIs directly when you explicitly want a single-lane workflow.
 
+## Migration (speedrift lane -> coredrift)
+
+If an older repo still has `./.workgraph/speedrift`, reinstall wrappers:
+
+```bash
+driftdriver install --wrapper-mode portable --with-uxdrift --with-therapydrift --with-yagnidrift --with-redrift
+```
+
+Then run:
+
+```bash
+./.workgraph/coredrift ensure-contracts --apply
+```
+
+Legacy lane repo `dbmcco/speedrift` is retained only as a deprecation pointer.
+
 ## Validation
 
 Run ecosystem-level checks from this repo:
