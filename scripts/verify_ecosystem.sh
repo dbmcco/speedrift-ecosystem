@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT="${ROOT:-/Users/braydon/projects/experiments}"
 REPOS=(
+  speedrift-ecosystem
   driftdriver
   speedrift
   redrift
