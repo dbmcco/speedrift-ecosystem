@@ -4,7 +4,7 @@ Speedrift is a Workgraph-first control system for agentic software development.
 
 ## Acknowledgements
 
-Speedrift builds on [Workgraph](https://graphwork.github.io/), an independent project led by [Erik Garrison](https://github.com/erikgarrison) and contributors.
+Speedrift builds on [Workgraph](https://graphwork.github.io/), an independent project led by [Erik Garrison](https://github.com/ekg) and contributors.
 Speedrift is a separate ecosystem that uses Workgraph as its execution spine.
 
 ## Status
@@ -192,30 +192,9 @@ Current beta limitations and workarounds are tracked in:
 
 ## Story Deck
 
-Use the live GitHub Pages deck:
+Main deck file in this repo:
 
-- [Open interactive story deck](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)
-
-Important:
-
-- GitHub repository file preview for `docs/decks/speedrift-ecosystem-story.html` is not interactive.
-- Use the Pages URL above for working slide controls and navigation.
-
-Slide links:
-
-- [Why now (slide 1)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1)
-- [Ecosystem architecture (slide 3)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3)
-- [Workflow loop (slide 4)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4)
-- [Loop-safe controls (slide 7)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7)
-
-Preview:
-
-| Slide | Preview |
-|---|---|
-| Why now | [![Speedrift story slide 1](docs/decks/previews/slide-1.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1) |
-| Ecosystem architecture | [![Speedrift story slide 3](docs/decks/previews/slide-3.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3) |
-| Workflow loop | [![Speedrift story slide 4](docs/decks/previews/slide-4.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4) |
-| Loop-safe controls | [![Speedrift story slide 7](docs/decks/previews/slide-7.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7) |
+- `docs/decks/speedrift-ecosystem-story.html`
 
 ## Migration Note
 

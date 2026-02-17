@@ -60,6 +60,19 @@
         pointer-events: auto;
       }
 
+      /* Hash-target fallback: keeps navigation usable if script controls are unavailable. */
+      .slide:target {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+
+      .deck:has(.slide:target) .slide.active {
+        opacity: 0;
+        transform: translateY(12px) scale(0.986);
+        pointer-events: none;
+      }
+
       .panel {
         height: 100%;
         border: 1px solid var(--line);
@@ -264,6 +277,28 @@
         text-align: center;
       }
 
+      .slide-jump {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: 6px;
+      }
+
+      .jump-link {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 3px 7px;
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--ink-soft);
+        text-decoration: none;
+        line-height: 1;
+      }
+
+      .jump-link.active {
+        color: var(--ink);
+        border-color: rgba(20, 24, 29, 0.32);
+      }
+
       .kbd {
         border: 1px solid var(--line);
         border-radius: 8px;
@@ -302,7 +337,7 @@
   </head>
   <body>
     <main class="deck" id="deck">
-      <section class="slide active">
+      <section class="slide active" id="slide-1">
         <div class="panel layout-title">
           <div class="eyebrow">Speedrift Ecosystem</div>
           <h1>Agentic dev is fast. <span class="accent">Alignment is slower.</span></h1>
@@ -319,7 +354,7 @@
         </div>
       </section>
 
-      <section class="slide">
+      <section class="slide" id="slide-2">
         <div class="panel layout-split">
           <div>
             <div class="eyebrow">The Why</div>
@@ -365,7 +400,7 @@
         </div>
       </section>
 
-      <section class="slide">
+      <section class="slide" id="slide-3">
         <div class="panel layout-split">
           <div>
             <div class="eyebrow">Architecture</div>
@@ -440,7 +475,7 @@
         </div>
       </section>
 
-      <section class="slide">
+      <section class="slide" id="slide-4">
         <div class="panel layout-flow">
           <div class="eyebrow">Workflow Loop</div>
           <h2>Default operating rhythm for humans and agents.</h2>
@@ -489,7 +524,7 @@
         </div>
       </section>
 
-      <section class="slide">
+      <section class="slide" id="slide-5">
         <div class="panel layout-grid">
           <div>
             <div class="eyebrow">Module Roles</div>
@@ -519,7 +554,7 @@
         </div>
       </section>
 
-      <section class="slide">
+      <section class="slide" id="slide-6">
         <div class="panel layout-split">
           <div>
             <div class="eyebrow">Redrift Lane</div>
@@ -557,7 +592,7 @@
         </div>
       </section>
 
-      <section class="slide">
+      <section class="slide" id="slide-7">
         <div class="panel layout-split">
           <div>
             <div class="eyebrow">Principles</div>
@@ -598,7 +633,7 @@
         </div>
       </section>
 
-      <section class="slide">
+      <section class="slide" id="slide-8">
         <div class="panel layout-title">
           <div class="eyebrow">Starter Kit</div>
           <h2>How friends should use it on day one.</h2>
@@ -624,6 +659,16 @@
         <button class="nav-btn" id="prevBtn" type="button" aria-label="Previous slide">Prev</button>
         <span class="counter" id="counter">1 / 1</span>
         <button class="nav-btn" id="nextBtn" type="button" aria-label="Next slide">Next</button>
+        <span class="slide-jump" aria-label="Slide jump links">
+          <a class="jump-link" data-slide="1" href="#slide-1">1</a>
+          <a class="jump-link" data-slide="2" href="#slide-2">2</a>
+          <a class="jump-link" data-slide="3" href="#slide-3">3</a>
+          <a class="jump-link" data-slide="4" href="#slide-4">4</a>
+          <a class="jump-link" data-slide="5" href="#slide-5">5</a>
+          <a class="jump-link" data-slide="6" href="#slide-6">6</a>
+          <a class="jump-link" data-slide="7" href="#slide-7">7</a>
+          <a class="jump-link" data-slide="8" href="#slide-8">8</a>
+        </span>
         <span class="kbd">←</span>
         <span class="kbd">→</span>
         <span class="kbd">Space</span>
@@ -636,17 +681,37 @@
       const prevBtn = document.getElementById("prevBtn");
       const nextBtn = document.getElementById("nextBtn");
       const counter = document.getElementById("counter");
+      const jumpLinks = Array.from(document.querySelectorAll(".jump-link"));
       let index = 0;
       let touchStartX = null;
 
+      function parseSlideToken(token) {
+        const raw = String(token || "").trim();
+        if (!raw) {
+          return null;
+        }
+        const asNum = Number.parseInt(raw, 10);
+        if (Number.isInteger(asNum) && asNum >= 1 && asNum <= slides.length) {
+          return asNum;
+        }
+        const m = raw.match(/^slide-(\d+)$/i);
+        if (m) {
+          const n = Number.parseInt(m[1], 10);
+          if (Number.isInteger(n) && n >= 1 && n <= slides.length) {
+            return n;
+          }
+        }
+        return null;
+      }
+
       function parseInitialIndex() {
         const params = new URLSearchParams(window.location.search);
-        const fromQuery = Number.parseInt(params.get("slide") || "", 10);
-        if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= slides.length) {
+        const fromQuery = parseSlideToken(params.get("slide"));
+        if (fromQuery !== null) {
           return fromQuery - 1;
         }
-        const fromHash = Number.parseInt((window.location.hash || "").replace("#", ""), 10);
-        if (Number.isInteger(fromHash) && fromHash >= 1 && fromHash <= slides.length) {
+        const fromHash = parseSlideToken((window.location.hash || "").replace("#", ""));
+        if (fromHash !== null) {
           return fromHash - 1;
         }
         return 0;
@@ -663,7 +728,13 @@
         if (nextBtn) {
           nextBtn.disabled = index === slides.length - 1;
         }
-        window.location.hash = String(index + 1);
+        const hash = `slide-${index + 1}`;
+        if (window.location.hash !== `#${hash}`) {
+          window.location.hash = hash;
+        }
+        jumpLinks.forEach((link, i) => {
+          link.classList.toggle("active", i === index);
+        });
       }
 
       function next() {
