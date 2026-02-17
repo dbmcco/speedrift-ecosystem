@@ -44,6 +44,7 @@ REQUIRED_CMDS=(
   specdrift
   datadrift
   depsdrift
+  uxdrift
   therapydrift
   yagnidrift
   redrift

@@ -4,7 +4,6 @@ Last updated: February 17, 2026.
 
 ## Packaging
 
-- `uxdrift` is not yet distributed as a `pipx` app. Use the repo-local entrypoint (`./bin/uxdrift`) for now.
 - Most modules are currently installed from GitHub (`pipx install git+https://...`) rather than pinned package releases.
 
 ## Stability

@@ -7,7 +7,7 @@ Speedrift is a Workgraph-first control system for agentic software development.
 `speedrift` is in **public beta** and under active development.
 
 - APIs and defaults will continue evolving.
-- Modules are usable now, but packaging and polish are still in progress.
+- Modules are usable now; polish and release ergonomics are still in progress.
 - The near-term goal is real-world dogfooding and measurable reliability gains.
 
 ## North Star
@@ -59,6 +59,7 @@ pipx install git+https://github.com/dbmcco/coredrift.git
 pipx install git+https://github.com/dbmcco/specdrift.git
 pipx install git+https://github.com/dbmcco/datadrift.git
 pipx install git+https://github.com/dbmcco/depsdrift.git
+pipx install git+https://github.com/dbmcco/uxdrift.git
 pipx install git+https://github.com/dbmcco/therapydrift.git
 pipx install git+https://github.com/dbmcco/yagnidrift.git
 pipx install git+https://github.com/dbmcco/redrift.git
@@ -75,7 +76,11 @@ driftdriver install --wrapper-mode portable --with-uxdrift --with-therapydrift -
 ./.workgraph/drifts check --task start-1 --write-log --create-followups
 ```
 
-Note: `--with-uxdrift` is optional today; if `uxdrift` is not installed, `driftdriver` still installs the rest of the wrappers.
+Optional for Linux CI/containers:
+
+```bash
+uxdrift install-browsers
+```
 
 Expected outcome:
 
@@ -148,7 +153,7 @@ Add modules by need:
 - `therapydrift`: repeated drift loops and auto-recovery control
 - `yagnidrift`: complexity-control in early architecture phases
 - `redrift`: brownfield rebuilds and v2 planning/execution
-- `uxdrift`: run directly from its repo (`./bin/uxdrift ...`) until pipx packaging is finalized
+- `uxdrift`: browser-based UX drift checks (`uxdrift run ...`, `uxdrift wg check ...`)
 
 ## Known Limitations
 
