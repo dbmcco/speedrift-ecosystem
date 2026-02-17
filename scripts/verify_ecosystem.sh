@@ -46,6 +46,10 @@ echo "== Remote repo visibility =="
 for repo in "${REPOS[@]}"; do
   if gh repo view "dbmcco/$repo" --json name,visibility >/dev/null 2>&1; then
     vis="$(gh repo view "dbmcco/$repo" --json visibility -q .visibility)"
+    if [[ "$vis" != "PUBLIC" ]]; then
+      echo "[FAIL] dbmcco/$repo visibility is $vis (expected PUBLIC)"
+      exit 1
+    fi
     echo "[OK] dbmcco/$repo ($vis)"
   else
     echo "[FAIL] dbmcco/$repo not reachable"

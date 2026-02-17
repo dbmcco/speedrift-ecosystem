@@ -4,11 +4,11 @@ Speedrift is a Workgraph-first control system for agentic software development.
 
 ## Status
 
-`speedrift` is under active development.
+`speedrift` is in **public beta** and under active development.
 
-- Interfaces and defaults will continue evolving.
-- Some modules may move faster than others.
-- The goal right now is real-world dogfooding with strong feedback loops, not frozen APIs.
+- APIs and defaults will continue evolving.
+- Modules are usable now, but packaging and polish are still in progress.
+- The near-term goal is real-world dogfooding and measurable reliability gains.
 
 ## North Star
 
@@ -43,7 +43,15 @@ Think in motorsports terms:
 
 ## Usage Process
 
-### 1) Start A New Project
+### 1) Start In 10 Minutes (Public Beta Path)
+
+Prerequisites:
+
+- `wg` (Workgraph CLI)
+- `pipx`
+- `git`
+
+Install the currently-packaged core set:
 
 ```bash
 pipx install git+https://github.com/dbmcco/driftdriver.git
@@ -51,15 +59,29 @@ pipx install git+https://github.com/dbmcco/coredrift.git
 pipx install git+https://github.com/dbmcco/specdrift.git
 pipx install git+https://github.com/dbmcco/datadrift.git
 pipx install git+https://github.com/dbmcco/depsdrift.git
-pipx install git+https://github.com/dbmcco/uxdrift.git
 pipx install git+https://github.com/dbmcco/therapydrift.git
 pipx install git+https://github.com/dbmcco/yagnidrift.git
 pipx install git+https://github.com/dbmcco/redrift.git
+```
 
+Create a tiny working graph and run one drift check:
+
+```bash
 wg init
+wg add --id start-1 "Bootstrap speedrift" --description "Create first speedrift task"
+wg claim start-1
 driftdriver install --wrapper-mode portable --with-uxdrift --with-therapydrift --with-yagnidrift --with-redrift
 ./.workgraph/coredrift ensure-contracts --apply
+./.workgraph/drifts check --task start-1 --write-log --create-followups
 ```
+
+Note: `--with-uxdrift` is optional today; if `uxdrift` is not installed, `driftdriver` still installs the rest of the wrappers.
+
+Expected outcome:
+
+- wrappers exist under `./.workgraph/` (`drifts`, `coredrift`, `specdrift`, etc.)
+- task `start-1` has a `wg-contract` in its description
+- `wg show start-1` includes a `Coredrift:` log entry
 
 ### 2) Resume A Project
 
@@ -114,6 +136,26 @@ Repos:
 | yagnidrift | overbuild and complexity drift | https://github.com/dbmcco/yagnidrift |
 | redrift | v1->v2 re-spec/rebuild lane | https://github.com/dbmcco/redrift |
 
+## Module Install Matrix
+
+Most users should start with:
+
+- `driftdriver + coredrift + specdrift + depsdrift`
+
+Add modules by need:
+
+- `datadrift`: schema/migration-heavy codebases
+- `therapydrift`: repeated drift loops and auto-recovery control
+- `yagnidrift`: complexity-control in early architecture phases
+- `redrift`: brownfield rebuilds and v2 planning/execution
+- `uxdrift`: run directly from its repo (`./bin/uxdrift ...`) until pipx packaging is finalized
+
+## Known Limitations
+
+Current beta limitations and workarounds are tracked in:
+
+- `docs/known-limitations.md`
+
 ## Story Deck
 
 Live deck:
@@ -149,3 +191,13 @@ Run ecosystem-level verification from this repo:
 ```bash
 ./scripts/verify_ecosystem.sh
 ```
+
+Public-readiness smoke checks:
+
+```bash
+./scripts/public_smoke_check.sh
+```
+
+## License
+
+MIT. See `LICENSE`.
