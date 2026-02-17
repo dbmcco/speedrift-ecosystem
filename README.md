@@ -2,6 +2,10 @@
 
 Speedrift is a Workgraph-first control system for agentic software development.
 
+## Acknowledgements
+
+Speedrift is built on top of the excellent [Workgraph](https://graphwork.github.io/) foundation, created by [Erik Garrison](https://github.com/erikgarrison).
+
 ## Status
 
 `speedrift` is in **public beta** and under active development.
@@ -58,6 +62,7 @@ pipx install git+https://github.com/dbmcco/driftdriver.git
 pipx install git+https://github.com/dbmcco/coredrift.git
 pipx install git+https://github.com/dbmcco/specdrift.git
 pipx install git+https://github.com/dbmcco/datadrift.git
+pipx install git+https://github.com/dbmcco/archdrift.git
 pipx install git+https://github.com/dbmcco/depsdrift.git
 pipx install git+https://github.com/dbmcco/uxdrift.git
 pipx install git+https://github.com/dbmcco/therapydrift.git
@@ -103,6 +108,12 @@ For each claimed task:
 ./.workgraph/drifts check --task <task_id> --write-log --create-followups
 ```
 
+For complex apps, rebuilds, or data+app redo tasks:
+
+```bash
+./.workgraph/drifts check --task <task_id> --lane-strategy all --write-log --create-followups
+```
+
 Optional continuous mode:
 
 ```bash
@@ -124,7 +135,7 @@ Naming:
 - Suite name: `speedrift` (ecosystem)
 - Orchestrator CLI: `driftdriver`
 - Baseline lane: `coredrift`
-- Optional lanes: `specdrift`, `datadrift`, `depsdrift`, `uxdrift`, `therapydrift`, `yagnidrift`
+- Optional lanes: `specdrift`, `datadrift`, `archdrift`, `depsdrift`, `uxdrift`, `therapydrift`, `yagnidrift`
 - Rebuild lane: `redrift`
 
 Repos:
@@ -135,6 +146,7 @@ Repos:
 | coredrift | baseline drift telemetry + redirect | https://github.com/dbmcco/coredrift |
 | specdrift | spec/code drift | https://github.com/dbmcco/specdrift |
 | datadrift | data/schema drift | https://github.com/dbmcco/datadrift |
+| archdrift | architecture-intent drift | https://github.com/dbmcco/archdrift |
 | depsdrift | dependency drift | https://github.com/dbmcco/depsdrift |
 | uxdrift | UX task/design drift | https://github.com/dbmcco/uxdrift |
 | therapydrift | self-healing/loop quality lane | https://github.com/dbmcco/therapydrift |
@@ -150,6 +162,7 @@ Most users should start with:
 Add modules by need:
 
 - `datadrift`: schema/migration-heavy codebases
+- `archdrift`: architecture docs/ADRs must track system changes
 - `therapydrift`: repeated drift loops and auto-recovery control
 - `yagnidrift`: complexity-control in early architecture phases
 - `redrift`: brownfield rebuilds and v2 planning/execution
@@ -170,15 +183,14 @@ Live deck:
 Fallback:
 
 - `docs/decks/speedrift-ecosystem-story.html`
+- If slide controls do not work, open the Pages URL above (GitHub file preview disables deck JavaScript).
 
-Embedded preview:
+Jump links:
 
-| Slide | Preview |
-|---|---|
-| Why now | [![Speedrift story slide 1](docs/decks/previews/slide-1.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1) |
-| Ecosystem architecture | [![Speedrift story slide 3](docs/decks/previews/slide-3.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3) |
-| Workflow loop | [![Speedrift story slide 4](docs/decks/previews/slide-4.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4) |
-| Loop-safe controls | [![Speedrift story slide 7](docs/decks/previews/slide-7.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7) |
+- Why now: https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1
+- Ecosystem architecture: https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3
+- Workflow loop: https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4
+- Loop-safe controls: https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7
 
 ## Migration Note
 

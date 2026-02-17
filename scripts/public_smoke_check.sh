@@ -13,6 +13,9 @@ REPOS=(
   therapydrift
   yagnidrift
 )
+PRIVATE_REPOS=(
+  archdrift
+)
 
 echo "== Public repo reachability =="
 for repo in "${REPOS[@]}"; do
@@ -24,6 +27,19 @@ for repo in "${REPOS[@]}"; do
     exit 1
   fi
 done
+
+if command -v gh >/dev/null 2>&1; then
+  echo
+  echo "== Private lane reachability (authenticated) =="
+  for repo in "${PRIVATE_REPOS[@]}"; do
+    if gh repo view "dbmcco/$repo" --json name,visibility >/dev/null 2>&1; then
+      vis="$(gh repo view "dbmcco/$repo" --json visibility -q .visibility)"
+      echo "[OK] dbmcco/$repo ($vis)"
+    else
+      echo "[WARN] dbmcco/$repo not reachable via gh auth (skipping)"
+    fi
+  done
+fi
 
 echo
 echo "== Public story deck reachability =="
@@ -43,6 +59,7 @@ REQUIRED_CMDS=(
   coredrift
   specdrift
   datadrift
+  archdrift
   depsdrift
   uxdrift
   therapydrift

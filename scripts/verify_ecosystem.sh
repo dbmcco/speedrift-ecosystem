@@ -13,6 +13,7 @@ REPOS=(
   uxdrift
   therapydrift
   yagnidrift
+  archdrift
 )
 
 echo "== Local checkout validation =="
@@ -44,10 +45,14 @@ fi
 echo
 echo "== Remote repo visibility =="
 for repo in "${REPOS[@]}"; do
+  expected="PUBLIC"
+  if [[ "$repo" == "archdrift" ]]; then
+    expected="PRIVATE"
+  fi
   if gh repo view "dbmcco/$repo" --json name,visibility >/dev/null 2>&1; then
     vis="$(gh repo view "dbmcco/$repo" --json visibility -q .visibility)"
-    if [[ "$vis" != "PUBLIC" ]]; then
-      echo "[FAIL] dbmcco/$repo visibility is $vis (expected PUBLIC)"
+    if [[ "$vis" != "$expected" ]]; then
+      echo "[FAIL] dbmcco/$repo visibility is $vis (expected $expected)"
       exit 1
     fi
     echo "[OK] dbmcco/$repo ($vis)"

@@ -18,6 +18,10 @@ url = "https://github.com/dbmcco/specdrift"
 role = "lane"
 url = "https://github.com/dbmcco/datadrift"
 
+[repos.archdrift]
+role = "lane"
+url = "https://github.com/dbmcco/archdrift"
+
 [repos.depsdrift]
 role = "lane"
 url = "https://github.com/dbmcco/depsdrift"
