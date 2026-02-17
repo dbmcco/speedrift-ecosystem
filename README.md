@@ -2,6 +2,8 @@
 
 Speedrift is a Workgraph-first control system for agentic software development.
 
+**[See the story deck](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)** — arrow keys or footer controls to navigate
+
 ## Acknowledgements
 
 Speedrift builds on [Workgraph](https://graphwork.github.io/), an independent project led by [Erik Garrison](https://github.com/ekg) and contributors.
@@ -192,7 +194,7 @@ Current beta limitations and workarounds are tracked in:
 
 ## Story Deck
 
-Main deck file in this repo:
+Main deck source in this repo:
 
 - `docs/decks/speedrift-ecosystem-story.html`
 
