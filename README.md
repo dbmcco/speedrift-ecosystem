@@ -126,6 +126,13 @@ For each claimed task:
 ./.workgraph/drifts check --task <task_id> --write-log --create-followups
 ```
 
+For redrift rebuild tasks, run explicit gate verification before final done checks:
+
+```bash
+./.workgraph/redrift wg verify --task <task_id> --write-log
+./.workgraph/redrift wg check --task <task_id> --run-verify --write-log --create-followups
+```
+
 For complex apps, rebuilds, or data+app redo tasks:
 
 ```bash
@@ -144,6 +151,14 @@ Use `redrift` when rebuilding toward v2 with phased artifacts:
 
 ```bash
 ./.workgraph/redrift wg execute --task <root_task_id> --v2-repo <target_path> --write-log --phase-checks
+```
+
+Recommended closeout sequence per phase task:
+
+```bash
+./.workgraph/redrift wg verify --task redrift-exec-<phase>-<root_task_id> --write-log
+./.workgraph/drifts check --task redrift-exec-<phase>-<root_task_id> --write-log --create-followups
+./.workgraph/redrift wg commit --task redrift-exec-<phase>-<root_task_id> --phase <phase>
 ```
 
 ## Ecosystem Map
