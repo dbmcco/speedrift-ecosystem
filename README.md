@@ -4,7 +4,8 @@ Speedrift is a Workgraph-first control system for agentic software development.
 
 ## Acknowledgements
 
-Speedrift is built on top of the excellent [Workgraph](https://graphwork.github.io/) foundation, created by [Erik Garrison](https://github.com/erikgarrison).
+Speedrift builds on [Workgraph](https://graphwork.github.io/), an independent project led by [Erik Garrison](https://github.com/erikgarrison) and contributors.
+Speedrift is a separate ecosystem that uses Workgraph as its execution spine.
 
 ## Status
 
@@ -44,6 +45,21 @@ Think in motorsports terms:
 - **Telemetry**: drift lanes produce signals and evidence.
 - **Countersteer**: findings create logs and follow-up tasks instead of silent bloat.
 - **Pit stop**: recovery loops (`therapydrift`, `redrift`) re-sync before failures compound.
+
+## Model-Mediated Approach
+
+Speedrift separates execution from judgment:
+
+- **Pipes execute**: lane CLIs gather evidence, run checks, and produce deterministic outputs.
+- **Models decide**: agents/models interpret evidence, choose tradeoffs, and propose next actions.
+- **Graph records intent**: contracts, fences, and `wg log` entries keep decisions visible and auditable.
+- **Follow-ups over hidden fixes**: uncertain or out-of-scope work becomes explicit tasks, not silent workaround code.
+
+Practical effect:
+
+- faster parallel agent work without losing architectural intent
+- less fix-on-fix drift because decisions are externalized in the graph
+- easier resume/restart because context lives in artifacts, not in transient chat memory
 
 ## Usage Process
 
@@ -176,21 +192,30 @@ Current beta limitations and workarounds are tracked in:
 
 ## Story Deck
 
-Live deck:
+Use the live GitHub Pages deck:
 
-- https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html
+- [Open interactive story deck](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)
 
-Fallback:
+Important:
 
-- `docs/decks/speedrift-ecosystem-story.html`
-- If slide controls do not work, open the Pages URL above (GitHub file preview disables deck JavaScript).
+- GitHub repository file preview for `docs/decks/speedrift-ecosystem-story.html` is not interactive.
+- Use the Pages URL above for working slide controls and navigation.
 
-Jump links:
+Slide links:
 
-- Why now: https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1
-- Ecosystem architecture: https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3
-- Workflow loop: https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4
-- Loop-safe controls: https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7
+- [Why now (slide 1)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1)
+- [Ecosystem architecture (slide 3)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3)
+- [Workflow loop (slide 4)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4)
+- [Loop-safe controls (slide 7)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7)
+
+Preview:
+
+| Slide | Preview |
+|---|---|
+| Why now | [![Speedrift story slide 1](docs/decks/previews/slide-1.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=1) |
+| Ecosystem architecture | [![Speedrift story slide 3](docs/decks/previews/slide-3.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=3) |
+| Workflow loop | [![Speedrift story slide 4](docs/decks/previews/slide-4.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=4) |
+| Loop-safe controls | [![Speedrift story slide 7](docs/decks/previews/slide-7.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html?slide=7) |
 
 ## Migration Note
 
