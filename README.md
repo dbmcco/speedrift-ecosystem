@@ -235,7 +235,7 @@ Add modules by need:
 - `therapydrift`: repeated drift loops and auto-recovery control
 - `yagnidrift`: complexity-control in early architecture phases
 - `redrift`: brownfield rebuilds and v2 planning/execution
-- `uxdrift`: browser-based UX drift checks (`uxdrift run ...`, `uxdrift wg check ...`)
+- `uxdrift`: browser-based UX drift checks; for production loops prefer task fences + `./.workgraph/drifts check` with `pov = "doet-norman-v1"`
 
 ## Known Limitations
 
