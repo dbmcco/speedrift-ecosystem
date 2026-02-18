@@ -63,6 +63,14 @@ Practical effect:
 - less fix-on-fix drift because decisions are externalized in the graph
 - easier resume/restart because context lives in artifacts, not in transient chat memory
 
+## Runtime Integration
+
+Speedrift can run through different agent runtimes while keeping the same Workgraph-first control model.
+
+- Amplifier integration bundle: https://github.com/dbmcco/amplifier-bundle-speedrift
+
+This keeps `speedrift` as the suite/control plane and treats runtime frameworks as interchangeable execution cockpits.
+
 ## Usage Process
 
 ### 1) Start In 10 Minutes (Public Beta Path)
@@ -145,6 +153,33 @@ Optional continuous mode:
 ./.workgraph/drifts orchestrate --write-log --create-followups
 ```
 
+### UX POV Discipline (uxdrift)
+
+For UX-heavy tasks, run `uxdrift` with an explicit POV pack so model reasoning is consistent across runs.
+
+Current built-in POV:
+
+- `doet-norman-v1` (Design of Everyday Things mindset)
+
+Example Workgraph task fence:
+
+````md
+```uxdrift
+schema = 1
+url = "http://localhost:3000"
+pages = ["/", "/checkout"]
+llm = true
+pov = "doet-norman-v1"
+pov_focus = ["discoverability", "feedback", "error_prevention_recovery"]
+```
+````
+
+Example direct run:
+
+```bash
+uxdrift wg check --task <task_id> --llm --pov doet-norman-v1 --write-log --create-followups
+```
+
 ### 4) Run Brownfield Rebuilds
 
 Use `redrift` when rebuilding toward v2 with phased artifacts:
@@ -185,6 +220,7 @@ Repos:
 | therapydrift | self-healing/loop quality lane | https://github.com/dbmcco/therapydrift |
 | yagnidrift | overbuild and complexity drift | https://github.com/dbmcco/yagnidrift |
 | redrift | v1->v2 re-spec/rebuild lane | https://github.com/dbmcco/redrift |
+| amplifier-bundle-speedrift | Amplifier runtime integration for Speedrift protocols | https://github.com/dbmcco/amplifier-bundle-speedrift |
 
 ## Module Install Matrix
 
