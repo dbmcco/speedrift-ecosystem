@@ -8,7 +8,7 @@ Speedrift is a drift control system for agentic software development. It keeps p
 
 ## Quick Reference
 
-If you're an agent (or a human in a hurry), start here.
+> **Reading intent:** This README is written for both AI coding agents and humans. Agents: the quick reference below is your operational playbook — scan it before doing anything in a speedrift-enabled repo. The narrative sections that follow provide architectural context and rationale. Humans: same applies, just slower.
 
 ### When to do what
 
