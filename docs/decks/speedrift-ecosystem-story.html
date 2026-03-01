@@ -362,14 +362,15 @@
           <div class="eyebrow">Speedrift Ecosystem</div>
           <h1>Agentic dev is fast. <span class="accent">Alignment is slower.</span></h1>
           <p>
-            Speedrift exists to keep intent, specs, tasks, and code synchronized while agents run at full pace.
-            Workgraph is the spine, driftdriver is the pit wall, and drifts are specialized control loops.
+            Speedrift is five things working together: drift lanes, model-mediated judgment, project autopilot,
+            ecosystem intelligence, and runtime integration. Workgraph is the spine. Everything else wraps it.
           </p>
           <div class="chips">
-            <span class="chip">Workgraph-first</span>
+            <span class="chip">10 drift lanes</span>
             <span class="chip">Model-mediated</span>
-            <span class="chip">Advisory not blocking</span>
-            <span class="chip">Human-light operation</span>
+            <span class="chip">Full-loop autopilot</span>
+            <span class="chip">Ecosystem-aware</span>
+            <span class="chip">Runtime-agnostic</span>
           </div>
         </div>
       </section>
@@ -424,8 +425,8 @@
         <div class="panel layout-split">
           <div>
             <div class="eyebrow">Architecture</div>
-            <h2>Workgraph spine + orchestrated drift lanes.</h2>
-            <p>Driftdriver always runs <strong>coredrift</strong>, then selects specialist lanes by strategy (`auto`, `fences`, `all`).</p>
+            <h2>Five layers, one control plane.</h2>
+            <p>Workgraph is the task spine. Driftdriver orchestrates 10 drift lanes, manages ecosystem intelligence, drives the autopilot loop, and plugs into any agent runtime.</p>
             <div class="chips">
               <span class="chip">coredrift</span>
               <span class="chip">specdrift</span>
@@ -498,13 +499,13 @@
       <section class="slide" id="slide-4">
         <div class="panel layout-flow">
           <div class="eyebrow">Workflow Loop</div>
-          <h2>Default operating rhythm for humans and agents.</h2>
+          <h2>Autopilot is the default. Manual when you need precision.</h2>
           <div class="steps">
-            <div class="step"><strong>1. Task Contract</strong><span>Objective, touch, non-goals in Workgraph</span></div>
-            <div class="step"><strong>2. Drift Check</strong><span>`./.workgraph/drifts check --task …`</span></div>
-            <div class="step"><strong>3. Build Fast</strong><span>Parallel agent execution</span></div>
-            <div class="step"><strong>4. Redirect</strong><span>Logs + follow-ups instead of silent bloat</span></div>
-            <div class="step"><strong>5. Re-sync</strong><span>Loop closes before merge/release</span></div>
+            <div class="step"><strong>1. Goal</strong><span>driftdriver autopilot --goal "…"</span></div>
+            <div class="step"><strong>2. Decompose</strong><span>LLM planner → wg add tasks</span></div>
+            <div class="step"><strong>3. Workers</strong><span>Parallel session-driver agents</span></div>
+            <div class="step"><strong>4. Drift + Review</strong><span>Lanes check, evidence verifies</span></div>
+            <div class="step"><strong>5. Loop or Done</strong><span>Follow-ups → re-enter, or report</span></div>
           </div>
           <div class="diagram-shell">
             <svg viewBox="0 0 980 280" role="img" aria-label="Workflow loop">
@@ -513,32 +514,32 @@
                   <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a6a5a" />
                 </marker>
               </defs>
-              <rect x="22" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
-              <text x="103" y="98" text-anchor="middle" font-size="13">Workgraph task</text>
-              <text x="103" y="116" text-anchor="middle" font-size="11" fill="#6f6255">contract + deps</text>
+              <rect x="22" y="68" width="162" height="64" rx="14" fill="#fff0e8" stroke="#ef4e2a" />
+              <text x="103" y="98" text-anchor="middle" font-size="13">Goal</text>
+              <text x="103" y="116" text-anchor="middle" font-size="11" fill="#6f6255">autopilot --goal "…"</text>
 
               <rect x="214" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
-              <text x="295" y="98" text-anchor="middle" font-size="13">driftdriver</text>
-              <text x="295" y="116" text-anchor="middle" font-size="11" fill="#6f6255">policy + routing</text>
+              <text x="295" y="98" text-anchor="middle" font-size="13">Decompose</text>
+              <text x="295" y="116" text-anchor="middle" font-size="11" fill="#6f6255">LLM → wg add tasks</text>
 
               <rect x="406" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
-              <text x="487" y="98" text-anchor="middle" font-size="13">drift lanes</text>
-              <text x="487" y="116" text-anchor="middle" font-size="11" fill="#6f6255">coredrift + optionals</text>
+              <text x="487" y="98" text-anchor="middle" font-size="13">Workers</text>
+              <text x="487" y="116" text-anchor="middle" font-size="11" fill="#6f6255">parallel session-driver</text>
 
               <rect x="598" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
-              <text x="679" y="98" text-anchor="middle" font-size="13">wg log + followups</text>
-              <text x="679" y="116" text-anchor="middle" font-size="11" fill="#6f6255">redirect, no hard stop</text>
+              <text x="679" y="98" text-anchor="middle" font-size="13">Drift + Review</text>
+              <text x="679" y="116" text-anchor="middle" font-size="11" fill="#6f6255">lanes check, evidence verifies</text>
 
               <rect x="790" y="68" width="162" height="64" rx="14" fill="#fff" stroke="#d4c1af" />
-              <text x="871" y="98" text-anchor="middle" font-size="13">next agent pass</text>
-              <text x="871" y="116" text-anchor="middle" font-size="11" fill="#6f6255">same graph, tighter scope</text>
+              <text x="871" y="98" text-anchor="middle" font-size="13">Loop or Done</text>
+              <text x="871" y="116" text-anchor="middle" font-size="11" fill="#6f6255">follow-ups → re-enter</text>
 
               <line x1="184" y1="100" x2="214" y2="100" stroke="#7a6a5a" stroke-width="2" marker-end="url(#arr2)" />
               <line x1="376" y1="100" x2="406" y2="100" stroke="#7a6a5a" stroke-width="2" marker-end="url(#arr2)" />
               <line x1="568" y1="100" x2="598" y2="100" stroke="#7a6a5a" stroke-width="2" marker-end="url(#arr2)" />
               <line x1="760" y1="100" x2="790" y2="100" stroke="#7a6a5a" stroke-width="2" marker-end="url(#arr2)" />
               <path d="M 871 148 C 870 222, 150 222, 102 148" fill="none" stroke="#ef4e2a" stroke-width="3" marker-end="url(#arr2)" />
-              <text x="490" y="246" text-anchor="middle" font-size="12" fill="#8f3e2a">Continuous countersteer loop</text>
+              <text x="490" y="246" text-anchor="middle" font-size="12" fill="#8f3e2a">Autopilot loop — follow-ups re-enter the graph</text>
             </svg>
           </div>
         </div>
@@ -804,10 +805,11 @@
           </div>
           <div class="chips">
             <span class="chip">Open-source lanes</span>
-            <span class="chip">Workgraph-native</span>
-            <span class="chip">session-driver parallel agents</span>
+            <span class="chip">Runtime-agnostic</span>
+            <span class="chip">Agent-readable docs</span>
+            <span class="chip">session-driver workers</span>
           </div>
-          <p>Speedrift is the control system for building fast without abandoning intent.</p>
+          <p>Docs are written for both AI agents and humans. Agents get the operational playbook; humans get the narrative. Same README, dual audience.</p>
         </div>
       </section>
     </main>
