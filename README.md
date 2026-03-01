@@ -71,6 +71,19 @@ Speedrift can run through different agent runtimes while keeping the same Workgr
 
 This keeps `speedrift` as the suite/control plane and treats runtime frameworks as interchangeable execution cockpits.
 
+## Ecosystem Coordination
+
+Driftdriver has evolved beyond simple drift-check routing into a full ecosystem coordinator:
+
+- **External dependency awareness**: monitors Workgraph, Amplifier, superpowers, claude-session-driver, mira-OSS, beads, and freshell for upstream changes
+- **Automated daily scanning**: queries GitHub repos, watched users, and report URLs; surfaces findings as Workgraph eval tasks
+- **Review history**: timestamped JSON + Markdown snapshots retained under `.workgraph/.driftdriver/reviews/`
+- **Advisory, not automatic**: no auto-updates — humans decide via generated eval tasks
+
+This means the ecosystem is self-aware. Driftdriver tracks the health and evolution of every tool it depends on and alerts when upstream changes may affect your project.
+
+See [driftdriver](https://github.com/dbmcco/driftdriver) for full monitoring configuration and scanner setup.
+
 ## Usage Process
 
 ### 1) Start In 10 Minutes (Public Beta Path)
@@ -249,6 +262,10 @@ The driftdriver daily ecosystem scanner monitors these for new repos and activit
 - [@steveyegge](https://github.com/steveyegge) — Beads
 - [@ramparte](https://github.com/ramparte) — Amplifier bundles/extensions
 - [@ekg](https://github.com/ekg) — Erik Garrison (Workgraph / graphwork)
+- [@dsifry](https://github.com/dsifry) — Metaswarm (multi-agent orchestration)
+- [@Joi](https://github.com/Joi) — AI agent learnings
+
+The vibez community ("code code code" group) is an additional discovery source — repos and tools shared by members are triaged via [vibez-monitor](https://github.com/dbmcco/vibez-monitor) and added to the scanner when relevant.
 
 Guide: [Amplifier Stories](https://ramparte.github.io/amplifier-stories/)
 
