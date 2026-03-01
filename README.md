@@ -1,6 +1,8 @@
 # Speedrift Ecosystem
 
-Speedrift is a Workgraph-first control system for agentic software development.
+Speedrift is a drift control system for agentic software development. It keeps plans, code, specs, and decisions synchronized while agents work at full speed.
+
+[Workgraph](https://graphwork.github.io/) is the execution spine — task graph, dependencies, agent dispatch. Speedrift wraps it with 10 specialized drift lanes, an ecosystem intelligence layer, a model-mediated judgment architecture, and a full-loop project autopilot.
 
 **[See the story deck](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)** — arrow keys or footer controls to navigate
 
@@ -19,24 +21,106 @@ Speedrift is a separate ecosystem that uses Workgraph as its execution spine.
 
 ## North Star
 
-Build software at agent speed without losing shared intent.
+**Goal in. Done out.**
+
+Give the system a goal. It decomposes the work, dispatches parallel agents, runs drift checks at every boundary, performs evidence-based milestone review, and produces a report. Humans get called in for judgment — not supervision.
 
 That means:
 
 - plans, code, specs, and decisions stay synchronized over time
 - teams can run multiple agents in parallel with bounded risk
 - drift is surfaced and redirected early, not discovered at release time
+- the full loop — research, plan, build, verify, review — runs autonomously
 
 ## Why This Exists
 
 Agentic coding can produce code faster than humans can supervise. The result is drift:
 
-- code drift: fix-on-fix behavior and local workarounds
-- spec drift: implementation diverges from agreed behavior
-- intent drift: tasks optimize for the moment instead of the mission
-- loop drift: self-healing/guardrail logic can recurse without clear limits
+- **code drift**: fix-on-fix behavior and local workarounds
+- **spec drift**: implementation diverges from agreed behavior
+- **intent drift**: tasks optimize for the moment instead of the mission
+- **loop drift**: self-healing/guardrail logic can recurse without clear limits
 
-Speedrift is designed to keep momentum high while continuously countersteering toward alignment.
+Speedrift keeps momentum high while continuously countersteering toward alignment.
+
+## What Speedrift Is
+
+Speedrift is five things working together:
+
+### 1. Drift Lanes (Telemetry)
+
+10 specialized analyzers that produce evidence, not opinions:
+
+| Lane | What it watches |
+|------|----------------|
+| `coredrift` | Baseline code quality, hardening patterns, contract compliance |
+| `specdrift` | Spec/code alignment — does the build match the agreement? |
+| `datadrift` | Schema and data model drift |
+| `archdrift` | Architecture-intent drift against ADRs and design docs |
+| `depsdrift` | Dependency freshness, security, compatibility |
+| `uxdrift` | UX task/design drift with POV packs (Don Norman, etc.) |
+| `therapydrift` | Self-healing loop quality — are guardrails compounding? |
+| `yagnidrift` | Overbuild and complexity drift |
+| `redrift` | Brownfield v1→v2 rebuild coordination |
+| `drifts` | Orchestrator — runs the right lanes for the right task |
+
+### 2. Model-Mediated Judgment
+
+Speedrift separates execution from judgment:
+
+- **Pipes execute**: lane CLIs gather evidence, run checks, produce deterministic outputs.
+- **Models decide**: agents interpret evidence, choose tradeoffs, propose next actions.
+- **Graph records intent**: contracts, fences, and `wg log` entries keep decisions visible and auditable.
+- **Follow-ups over hidden fixes**: uncertain work becomes explicit tasks, not silent workaround code.
+
+Practical effect: faster parallel agent work without losing architectural intent, less fix-on-fix drift because decisions are externalized in the graph, and easier resume/restart because context lives in artifacts — not in transient chat memory.
+
+### 3. Project Autopilot
+
+The full autonomous loop:
+
+```
+Goal → Decompose → Workers (parallel, session-driver) → Drift Check → Milestone Review → Report
+         ↑                                                    |
+         └──────── follow-up tasks loop back ─────────────────┘
+```
+
+```bash
+driftdriver autopilot --goal "Build authentication system with JWT tokens"
+```
+
+The autopilot:
+- Decomposes goals into workgraph tasks via an LLM planner
+- Dispatches parallel workers using [claude-session-driver](https://github.com/obra/claude-session-driver) — each worker is a full Claude Code session
+- Runs drift checks at task boundaries
+- Escalates stuck tasks (repeated drift failures) instead of spinning
+- Performs evidence-based milestone review using 4 rules: map the execution graph, trace claims through code, distinguish delegation from absence, test empirically
+- Produces a structured report
+
+Workers are not limited agents — they have full tool access, codebase research, TDD capabilities. The controller orchestrates; workers execute.
+
+See [driftdriver](https://github.com/dbmcco/driftdriver) for autopilot flags and configuration.
+
+### 4. Ecosystem Intelligence
+
+Driftdriver monitors the health and evolution of every tool in the ecosystem:
+
+- **External dependency awareness**: watches Workgraph, Amplifier, superpowers, claude-session-driver, mira-OSS, beads, and freshell for upstream changes
+- **Automated daily scanning**: queries GitHub repos, watched users, and report URLs; surfaces findings as Workgraph eval tasks
+- **Review history**: timestamped JSON + Markdown snapshots retained under `.workgraph/.driftdriver/reviews/`
+- **Advisory, not automatic**: no auto-updates — humans decide via generated eval tasks
+
+The ecosystem is self-aware. Driftdriver tracks upstream changes and alerts when they may affect your project.
+
+### 5. Runtime Integration
+
+Speedrift is runtime-agnostic. The control plane stays the same regardless of which agent framework runs underneath:
+
+- **Claude Code**: native integration via driftdriver CLI + claude-session-driver
+- **Amplifier**: [amplifier-bundle-speedrift](https://github.com/dbmcco/amplifier-bundle-speedrift) integration bundle
+- **Any CLI agent**: workgraph tasks + drift wrappers work with any tool that reads/writes files
+
+This keeps `speedrift` as the suite/control plane and treats runtime frameworks as interchangeable execution cockpits.
 
 ## Mental Model
 
@@ -47,42 +131,6 @@ Think in motorsports terms:
 - **Telemetry**: drift lanes produce signals and evidence.
 - **Countersteer**: findings create logs and follow-up tasks instead of silent bloat.
 - **Pit stop**: recovery loops (`therapydrift`, `redrift`) re-sync before failures compound.
-
-## Model-Mediated Approach
-
-Speedrift separates execution from judgment:
-
-- **Pipes execute**: lane CLIs gather evidence, run checks, and produce deterministic outputs.
-- **Models decide**: agents/models interpret evidence, choose tradeoffs, and propose next actions.
-- **Graph records intent**: contracts, fences, and `wg log` entries keep decisions visible and auditable.
-- **Follow-ups over hidden fixes**: uncertain or out-of-scope work becomes explicit tasks, not silent workaround code.
-
-Practical effect:
-
-- faster parallel agent work without losing architectural intent
-- less fix-on-fix drift because decisions are externalized in the graph
-- easier resume/restart because context lives in artifacts, not in transient chat memory
-
-## Runtime Integration
-
-Speedrift can run through different agent runtimes while keeping the same Workgraph-first control model.
-
-- Amplifier integration bundle: https://github.com/dbmcco/amplifier-bundle-speedrift
-
-This keeps `speedrift` as the suite/control plane and treats runtime frameworks as interchangeable execution cockpits.
-
-## Ecosystem Coordination
-
-Driftdriver has evolved beyond simple drift-check routing into a full ecosystem coordinator:
-
-- **External dependency awareness**: monitors Workgraph, Amplifier, superpowers, claude-session-driver, mira-OSS, beads, and freshell for upstream changes
-- **Automated daily scanning**: queries GitHub repos, watched users, and report URLs; surfaces findings as Workgraph eval tasks
-- **Review history**: timestamped JSON + Markdown snapshots retained under `.workgraph/.driftdriver/reviews/`
-- **Advisory, not automatic**: no auto-updates — humans decide via generated eval tasks
-
-This means the ecosystem is self-aware. Driftdriver tracks the health and evolution of every tool it depends on and alerts when upstream changes may affect your project.
-
-See [driftdriver](https://github.com/dbmcco/driftdriver) for full monitoring configuration and scanner setup.
 
 ## Usage Process
 
@@ -141,7 +189,13 @@ driftdriver install --wrapper-mode portable --with-uxdrift --with-therapydrift -
 
 ### 3) Run The Day-To-Day Loop
 
-For each claimed task:
+**Autopilot mode** — give a goal and let the system handle decomposition, dispatch, drift, and review:
+
+```bash
+driftdriver autopilot --goal "Add user authentication with JWT tokens"
+```
+
+**Manual mode** — run drift checks per claimed task:
 
 ```bash
 ./.workgraph/drifts check --task <task_id> --write-log --create-followups
@@ -223,7 +277,7 @@ Naming:
 
 | Repo | Role | URL |
 |---|---|---|
-| driftdriver | Workgraph orchestration + policy + wrappers | https://github.com/dbmcco/driftdriver |
+| driftdriver | Orchestrator: autopilot, policy, ecosystem monitoring, wrappers | https://github.com/dbmcco/driftdriver |
 | coredrift | baseline drift telemetry + redirect | https://github.com/dbmcco/coredrift |
 | specdrift | spec/code drift | https://github.com/dbmcco/specdrift |
 | datadrift | data/schema drift | https://github.com/dbmcco/datadrift |
