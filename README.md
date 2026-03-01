@@ -206,7 +206,7 @@ Naming:
 - Optional lanes: `specdrift`, `datadrift`, `archdrift`, `depsdrift`, `uxdrift`, `therapydrift`, `yagnidrift`
 - Rebuild lane: `redrift`
 
-Repos:
+### Core Suite
 
 | Repo | Role | URL |
 |---|---|---|
@@ -221,6 +221,36 @@ Repos:
 | yagnidrift | overbuild and complexity drift | https://github.com/dbmcco/yagnidrift |
 | redrift | v1->v2 re-spec/rebuild lane | https://github.com/dbmcco/redrift |
 | amplifier-bundle-speedrift | Amplifier runtime integration for Speedrift protocols | https://github.com/dbmcco/amplifier-bundle-speedrift |
+
+### External Dependencies
+
+| Repo | Role | URL |
+|---|---|---|
+| Amplifier | Agent runtime (Microsoft) | https://github.com/microsoft/amplifier |
+| amplifier-core | Core library | https://github.com/microsoft/amplifier-core |
+| amplifier-app-cli | Reference CLI | https://github.com/microsoft/amplifier-app-cli |
+| amplifier-foundation | Foundation library | https://github.com/microsoft/amplifier-foundation |
+| Workgraph | Task graph spine, `wg` CLI (Erik Garrison / graphwork) | https://github.com/graphwork/workgraph |
+| superpowers | Core skills/workflow plugin (Jesse Vincent / obra) | https://github.com/obra/superpowers |
+| superpowers-chrome | Chrome DevTools browser control (Jesse Vincent / obra) | https://github.com/obra/superpowers-chrome |
+| claude-session-driver | Worker session orchestration (Jesse Vincent / obra) | https://github.com/obra/claude-session-driver |
+| freshell | Shell framework (Dan Shapiro) | https://github.com/danshapiro/freshell |
+| mira-OSS | Discrete memory decay + modular system prompt (Taylor Satula) | https://github.com/taylorsatula/mira-OSS |
+| beads | Git-backed task tracking, `bd` CLI (Steve Yegge) | https://github.com/steveyegge/beads |
+
+### Watched Users / Orgs
+
+The driftdriver daily ecosystem scanner monitors these for new repos and activity:
+
+- [@obra](https://github.com/obra) — superpowers, claude-session-driver, superpowers-chrome
+- [@2389](https://github.com/2389) — 2389-research
+- [@danshapiro](https://github.com/danshapiro) — Freshell
+- [@taylorsatula](https://github.com/taylorsatula) — MIRA
+- [@steveyegge](https://github.com/steveyegge) — Beads
+- [@ramparte](https://github.com/ramparte) — Amplifier bundles/extensions
+- [@ekg](https://github.com/ekg) — Erik Garrison (Workgraph / graphwork)
+
+Guide: [Amplifier Stories](https://ramparte.github.io/amplifier-stories/)
 
 ## Module Install Matrix
 
