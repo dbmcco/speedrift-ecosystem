@@ -6,6 +6,54 @@ Speedrift is a drift control system for agentic software development. It keeps p
 
 **[See the story deck](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)** — arrow keys or footer controls to navigate
 
+## Quick Reference
+
+If you're an agent (or a human in a hurry), start here.
+
+### When to do what
+
+| Situation | Command |
+|-----------|---------|
+| **New repo, first time** | `wg init && driftdriver install` then `coredrift ensure-contracts --apply` |
+| **Returning to existing repo** | `driftdriver install` (idempotent) then `coredrift ensure-contracts --apply` |
+| **Full autonomous run** | `driftdriver autopilot --goal "your goal"` |
+| **Per-task drift check** | `./.workgraph/drifts check --task <id> --write-log --create-followups` |
+| **Continuous drift monitor** | `./.workgraph/drifts orchestrate --write-log --create-followups` |
+| **All lanes on a complex task** | `./.workgraph/drifts check --task <id> --lane-strategy all --write-log --create-followups` |
+| **Brownfield rebuild** | `./.workgraph/redrift wg execute --task <id> --v2-repo <path> --write-log --phase-checks` |
+
+### Where state lives
+
+| Path | Contents |
+|------|----------|
+| `.workgraph/` | Task graph, wrappers (`drifts`, `coredrift`, etc.), logs |
+| `.workgraph/.autopilot/` | Autopilot state: `run-state.json`, `workers.jsonl`, `milestone-review.md` |
+| `.workgraph/.driftdriver/reviews/` | Ecosystem scan history (JSON + Markdown snapshots) |
+| `.workgraph/output/` | Drift check output logs per task |
+| Task descriptions | `wg-contract` blocks define acceptance criteria per task |
+| Task descriptions | Fenced `specrift`, `uxdrift` blocks configure lane-specific checks |
+
+### Conventions agents must follow
+
+1. **Drift is advisory, not blocking.** Drift findings create follow-up tasks and log entries — they do not block the current task.
+2. **Follow-ups over hidden fixes.** If drift surfaces something out of scope, create a new workgraph task. Do not silently fix it in the current task.
+3. **Contracts on every task.** Each task should have a `wg-contract` block in its description. Run `coredrift ensure-contracts --apply` to auto-generate missing ones.
+4. **Log everything.** Always use `--write-log` so findings are auditable via `wg show <id>`.
+5. **Create followups.** Always use `--create-followups` so drift findings become trackable tasks.
+6. **Workers are full agents.** In autopilot mode, workers are full Claude Code sessions with all tools. The controller orchestrates; workers do the actual research, coding, and testing.
+7. **Evidence over assumptions.** When reviewing work, trace claims through actual code paths. "The controller doesn't do X" is not the same as "X isn't done" — check whether a worker, drift check, or graph resolution handles it.
+
+### Key CLIs
+
+| CLI | Install | Purpose |
+|-----|---------|---------|
+| `wg` | [graphwork/workgraph](https://github.com/graphwork/workgraph) | Task graph: `init`, `add`, `claim`, `done`, `show`, `log`, `ready` |
+| `driftdriver` | `pipx install git+https://github.com/dbmcco/driftdriver.git` | Orchestrator: `install`, `autopilot`, `scan`, ecosystem monitoring |
+| `coredrift` | `pipx install git+https://github.com/dbmcco/coredrift.git` | Baseline drift lane + contract management |
+| Lane CLIs | `pipx install git+https://github.com/dbmcco/<lane>.git` | `specdrift`, `datadrift`, `archdrift`, `depsdrift`, `uxdrift`, `therapydrift`, `yagnidrift`, `redrift` |
+
+---
+
 ## Acknowledgements
 
 Speedrift builds on [Workgraph](https://graphwork.github.io/), an independent project led by [Erik Garrison](https://github.com/ekg) and contributors.
