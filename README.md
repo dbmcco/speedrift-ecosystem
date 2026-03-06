@@ -97,6 +97,15 @@ Workers consume ready tasks, run checks, and write outcomes back to local graph 
 
 Dashboard should always show active mode.
 
+## Control Repo Runtime State
+
+This repository is the ecosystem control repo, not a normal product/app repo.
+
+- `.workgraph/service/**` holds local runtime state for the hub, central register mirror, snapshots, and ledgers
+- that state is intentionally local and should not be committed
+- public source of truth for this repo is the checked-in docs, scripts, and [`ecosystem.toml`](./ecosystem.toml)
+- if you need live status, use the dashboard/API/websocket rather than git state under `.workgraph/`
+
 ## Dashboard Contract
 
 The operator view should be ordered as:
@@ -134,6 +143,15 @@ Track and visualize:
 - dependency bottlenecks and missing edge metadata
 
 Graph direction consistency is layout-dependent; semantics come from edge metadata, not visual orientation.
+
+## Repo Discovery Contract
+
+The ecosystem hub builds its repo set from two sources:
+
+- canonical suite entries from [`ecosystem.toml`](./ecosystem.toml)
+- autodiscovered workspace repos that have a local WorkGraph plus Speedrift policy markers
+
+The hub should surface the full matching set within the activity horizon, not an arbitrary truncated sample.
 
 ## Modules (Model-Mediated)
 
