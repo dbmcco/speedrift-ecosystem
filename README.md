@@ -1,207 +1,313 @@
 # Speedrift Ecosystem
 
-Speedrift is a drift control system for agentic software development. It keeps plans, code, specs, and decisions synchronized while agents work at full speed.
+Speedrift is no longer just a repo-local drift checker.
+It is now a model-mediated, multi-repo operations system with bounded autonomy.
 
-[Workgraph](https://graphwork.github.io/) is the execution spine — task graph, dependencies, agent dispatch. Speedrift wraps it with 10 specialized drift lanes, an ecosystem intelligence layer, a model-mediated judgment architecture, and a full-loop project autopilot.
+**Story deck:** [Speedrift Ecosystem Story](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)
 
-**[See the story deck](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)** — arrow keys or footer controls to navigate
+## Mental Model Shift
 
-## Quick Reference
-
-> **Reading intent:** This README is written for both AI coding agents and humans. Agents: the quick reference below is your operational playbook — scan it before doing anything in a speedrift-enabled repo. The narrative sections that follow provide architectural context and rationale. Humans: same applies, just slower.
-
-### When to do what
-
-| Situation | Command |
-|-----------|---------|
-| **New repo, first time** | `wg init && driftdriver install` then `coredrift ensure-contracts --apply` |
-| **Returning to existing repo** | `driftdriver install` (idempotent) then `coredrift ensure-contracts --apply` |
-| **Full autonomous run** | `driftdriver autopilot --goal "your goal"` |
-| **Per-task drift check** | `./.workgraph/drifts check --task <id> --write-log --create-followups` |
-| **Continuous drift monitor** | `./.workgraph/drifts orchestrate --write-log --create-followups` |
-| **All lanes on a complex task** | `./.workgraph/drifts check --task <id> --lane-strategy all --write-log --create-followups` |
-| **Brownfield rebuild** | `./.workgraph/redrift wg execute --task <id> --v2-repo <path> --write-log --phase-checks` |
-
-### Where state lives
-
-| Path | Contents |
-|------|----------|
-| `.workgraph/` | Task graph, wrappers (`drifts`, `coredrift`, etc.), logs |
-| `.workgraph/.autopilot/` | Autopilot state: `run-state.json`, `workers.jsonl`, `milestone-review.md` |
-| `.workgraph/.driftdriver/reviews/` | Ecosystem scan history (JSON + Markdown snapshots) |
-| `.workgraph/output/` | Drift check output logs per task |
-| Task descriptions | `wg-contract` blocks (acceptance criteria) and fenced `specrift`/`uxdrift` blocks (lane config) |
-
-### Conventions
-
-1. **Drift is advisory, not blocking.** Findings create follow-up tasks and log entries — never block the current task.
-2. **Follow-ups over hidden fixes.** Out-of-scope drift becomes a new workgraph task, not a silent fix.
-3. **Contracts on every task.** Run `coredrift ensure-contracts --apply` to auto-generate missing ones.
-4. **Always `--write-log --create-followups`.** Findings must be auditable and trackable.
-5. **Workers are full agents.** In autopilot, each worker is a full Claude Code session. The controller orchestrates; workers do the work.
-6. **Evidence over assumptions.** "The controller doesn't do X" ≠ "X isn't done." Trace actual code paths.
-
-### Key CLIs
-
-| CLI | Install | Purpose |
-|-----|---------|---------|
-| `wg` | [graphwork/workgraph](https://github.com/graphwork/workgraph) | Task graph: `init`, `add`, `claim`, `done`, `show`, `log`, `ready` |
-| `driftdriver` | `pipx install git+https://github.com/dbmcco/driftdriver.git` | Orchestrator: `install`, `autopilot`, `scan`, ecosystem monitoring |
-| `coredrift` | `pipx install git+https://github.com/dbmcco/coredrift.git` | Baseline drift lane + contract management |
-| Lane CLIs | `pipx install git+https://github.com/dbmcco/<lane>.git` | `specdrift`, `datadrift`, `archdrift`, `depsdrift`, `uxdrift`, `therapydrift`, `yagnidrift`, `redrift` |
-
----
+| Before | Now |
+|---|---|
+| Repo-local lane runner | Multi-repo operating fabric |
+| Human polls many repos manually | Daemonized control plane supervises all tracked repos |
+| Drift checks as one-off commands | Continuous cycle: observe -> prioritize -> plan -> execute -> record |
+| Visibility lives in scattered logs | Live dashboard + websocket + ledgers |
+| Upstream contribution is ad hoc | Structured upstream candidate pipeline |
 
 ## North Star
 
-**Goal in. Done out.** The system decomposes work, dispatches parallel agents, runs drift checks at every boundary, performs evidence-based milestone review, and produces a report. Humans get called in for judgment — not supervision.
+Build an autonomous dark-factory workflow that:
 
-## Why This Exists
+- keeps repos healthy and moving
+- detects stalls, dependency issues, and aging work early
+- emits corrective work into local graphs
+- executes only safe bounded automation
+- preserves full trail and handoff context for Claude/Codex agents
 
-Agentic coding produces code faster than humans can supervise. The result is drift: **code drift** (fix-on-fix behavior), **spec drift** (implementation diverges from agreement), **intent drift** (tasks optimize for the moment instead of the mission), and **loop drift** (self-healing logic recurses without limits).
+## System Layers
 
-## How It Works
+### Speedrift Core (repo plane)
 
-Speedrift is five things working together.
+Lives inside each repo:
 
-### Drift Lanes
+- `.workgraph` task graph and dependency state
+- repo-local drift lane checks
+- local hooks (`session-start`, `task-claimed`, `task-completing`, `agent-error`)
+- local corrective/follow-up tasks
 
-10 specialized analyzers that produce evidence, not opinions:
+### Speedrift Ecosystem (control plane)
 
-| Lane | What it watches |
-|------|----------------|
-| `coredrift` | Baseline code quality, hardening patterns, contract compliance |
-| `specdrift` | Spec/code alignment |
-| `datadrift` | Schema and data model drift |
-| `archdrift` | Architecture-intent drift against ADRs |
-| `depsdrift` | Dependency freshness, security, compatibility |
-| `uxdrift` | UX drift with POV packs (Don Norman, etc.) |
-| `therapydrift` | Self-healing loop quality — are guardrails compounding? |
-| `yagnidrift` | Overbuild and complexity drift |
-| `redrift` | Brownfield v1→v2 rebuild coordination |
-| `drifts` | Orchestrator — selects the right lanes per task |
+Runs centrally from this repo:
 
-### Model-Mediated Judgment
+- ecosystem daemon supervisor
+- cross-repo snapshot + pressure scoring
+- bounded factory execution loop
+- central register mirror + websocket broadcast
+- dashboard for narrated overview, graphs, and actionable queues
 
-Pipes execute (deterministic checks). Models decide (interpret evidence, choose tradeoffs). The graph records intent (contracts, fences, `wg log`). Context lives in artifacts, not transient chat memory — so resume and restart work.
+### Worker Plane
 
-### Project Autopilot
+Execution engines used in repos:
 
+- Claude Code CLI
+- Codex
+- `claude-session-driver` workers
+
+Workers consume ready tasks, run checks, and write outcomes back to local graph state.
+
+## Authority Contract
+
+### Central can
+
+- restart stopped repo services when work is queued
+- run deterministic safe handlers (`factorydrift`, `sessiondriver`, `secdrift`, `qadrift`, `plandrift`)
+- emit corrective tasks into local repo graphs
+- publish status to dashboard/api/websocket
+- write cycle decision ledgers
+
+### Central cannot (without explicit policy + local trace)
+
+- perform destructive git history operations
+- mutate unrelated local work silently
+- bypass required verification gates
+- hide decisions outside ledgers and graph artifacts
+
+## End-to-End Automation Flow
+
+1. You work in any repo with Claude/Codex.
+2. Repo-level workgraph and drift tooling update local state.
+3. Local status is mirrored into the central register.
+4. Ecosystem daemon runs a cycle:
+   - observe all repos
+   - prioritize pressure/risk
+   - plan bounded actions
+   - execute safe handlers (if `plan_only=false`)
+   - record ledger + websocket update
+5. Corrective or review tasks are written back into the local repo graph.
+6. Local agents continue with full trail of what central automation did and why.
+
+## Mode Contract
+
+- `plan_only=true`:
+  - plan, narrate, score, and emit follow-up tasks
+  - no automatic handler execution
+- `plan_only=false`:
+  - execute deterministic safe handlers within policy budgets
+
+Dashboard should always show active mode.
+
+## Dashboard Contract
+
+The operator view should be ordered as:
+
+1. Narrated overview
+2. Operational overview
+3. By-repo status cards
+4. Graph view (repo + inter-repo dependencies)
+5. Attention queues (aging gaps, dependency breaks, risk queues, upstream candidates)
+
+Interaction rules:
+
+- click a repo card to focus repo graph
+- keep a global inter-repo graph view available
+- show active repos/tasks visually (for example pulsing indicators)
+- every queue item should include a ready-to-run Claude/Codex prompt, not shell-only commands
+
+## Repo Health + Stall Semantics
+
+Repo cards should include a short reason line for `watch` or `at-risk`, such as:
+
+- service stopped while ready tasks exist
+- dependency chain blocked on upstream repo
+- aging in-progress tasks without heartbeat
+- repeated failed verification loopbacks
+
+This makes non-active repos explainable instead of silent.
+
+## Inter-Repo Dependency Model
+
+Track and visualize:
+
+- repo-to-repo edges (producer/consumer, contract dependencies, blocked-by links)
+- active path highlighting across repo boundaries
+- dependency bottlenecks and missing edge metadata
+
+Graph direction consistency is layout-dependent; semantics come from edge metadata, not visual orientation.
+
+## Modules (Model-Mediated)
+
+Core lane family:
+
+- `coredrift`, `specdrift`, `datadrift`, `archdrift`, `depsdrift`
+- `uxdrift`, `therapydrift`, `yagnidrift`, `redrift`
+
+Ecosystem control modules:
+
+- `factorydrift`: cycle planning + bounded execution
+- `sessiondriver`: ready-task dispatch with `claude-session-driver`
+- `secdrift`: security pressure + remediation task emission
+- `qadrift`: quality/UX/test pressure + remediation task emission
+- `plandrift`: test gates, failure loopbacks, continuation-edge integrity (`double-shot-latte`)
+- `northstardrift`: effectiveness scoring, regression detection, narrated awareness, and bounded follow-up emission against the dark-factory north star
+
+## Upstream Contribution Loop
+
+Imported external repos are not just pull targets.
+The ecosystem should continuously produce upstream candidate packets:
+
+1. detect reusable local improvements
+2. bundle context, rationale, and changed files
+3. emit draft-PR candidate tasks
+4. track opened/merged outcomes in the register
+
+## Ecosystem Impact Model (Mechanics Only)
+
+Show formulas and illustrative values, not production data:
+
+- coverage:
+  - `% repos reporting = reporting / registry`
+- flow health:
+  - `stall_rate = stalled / reporting`
+  - `dependency_gap_rate = repos_with_dep_gaps / reporting`
+  - `aging_pressure = weighted stale open + stale in-progress`
+- execution reliability:
+  - `factory_cycle_success = succeeded_actions / attempted_actions`
+  - `session_dispatch_success = successful_dispatches / attempted_dispatches`
+- quality + security:
+  - `security_pressure = critical*5 + high*3 + medium*1`
+  - `quality_pressure = high*3 + medium*1`
+  - `plan_integrity_coverage = repos_meeting_test_loopback_controls / repos_with_active_work`
+- upstream leverage:
+  - `candidate_throughput = candidate_packets / period`
+  - `accepted_upstream_ratio = merged_upstream_prs / opened_upstream_prs`
+
+Always pair each metric with:
+
+- trend (`improving`, `flat`, `worsening`)
+- tier (`healthy`, `watch`, `at-risk`)
+- next intervention prompt
+
+`northstardrift` is the module that should compute these scorecards, detect regressions, and emit model-mediated follow-up prompts/tasks from them.
+Design contract: [docs/northstardrift.md](./docs/northstardrift.md)
+
+## Daemon + Endpoints
+
+Run the ecosystem daemon continuously and codify the port.
+
+From `driftdriver` repo:
+
+```bash
+ECOSYSTEM_HUB_CENTRAL_REPO=/Users/braydon/projects/experiments/speedrift-ecosystem/.workgraph/service/ecosystem-central \
+  scripts/ecosystem_hub_daemon.sh ensure-running
 ```
-Goal → Decompose → Workers (parallel, session-driver) → Drift Check → Milestone Review → Report
-         ↑                                                    |
-         └──────── follow-up tasks loop back ─────────────────┘
-```
 
-Decomposes goals into workgraph tasks, dispatches parallel workers via [claude-session-driver](https://github.com/obra/claude-session-driver), runs drift at task boundaries, escalates stuck tasks, and performs evidence-based milestone review. See [driftdriver](https://github.com/dbmcco/driftdriver) for flags and configuration.
+Default endpoint contract:
 
-### Ecosystem Intelligence
+- dashboard: `http://127.0.0.1:8777/`
+- api: `http://127.0.0.1:8777/api/status`
+- websocket: `ws://127.0.0.1:8777/ws/status`
+- tailscale access: `http://<tailscale-host-or-ip>:8777/`
 
-Driftdriver monitors upstream changes across Workgraph, Amplifier, superpowers, claude-session-driver, and other dependencies. Daily scans surface findings as eval tasks — advisory, never automatic.
+## Quick Start
 
-### Runtime Integration
-
-The control plane is runtime-agnostic: Claude Code (native), [Amplifier](https://github.com/dbmcco/amplifier-bundle-speedrift) (bundle), or any CLI agent that reads/writes files.
-
-## Getting Started
-
-Prerequisites: `wg` ([Workgraph CLI](https://github.com/graphwork/workgraph)), `pipx`, `git`.
-
-Install core + optional lanes:
+### 1) Install core CLIs
 
 ```bash
 pipx install git+https://github.com/dbmcco/driftdriver.git
 pipx install git+https://github.com/dbmcco/coredrift.git
 pipx install git+https://github.com/dbmcco/specdrift.git
+pipx install git+https://github.com/dbmcco/datadrift.git
 pipx install git+https://github.com/dbmcco/depsdrift.git
+pipx install git+https://github.com/dbmcco/uxdrift.git
+pipx install git+https://github.com/dbmcco/therapydrift.git
+pipx install git+https://github.com/dbmcco/yagnidrift.git
+pipx install git+https://github.com/dbmcco/redrift.git
 ```
 
-Add lanes by need: `datadrift` (schemas), `archdrift` (ADRs), `uxdrift` (browser checks), `therapydrift` (loop quality), `yagnidrift` (complexity), `redrift` (rebuilds).
-
-First run:
+### 2) Enable a repo
 
 ```bash
 wg init
-wg add --id start-1 "Bootstrap speedrift" --description "Create first task"
-wg claim start-1
-driftdriver install --wrapper-mode portable
+driftdriver install --all-clis --wrapper-mode portable
 ./.workgraph/coredrift ensure-contracts --apply
-./.workgraph/drifts check --task start-1 --write-log --create-followups
 ```
 
-### UX POV Discipline
+### 3) Configure execute-mode policy
 
-For UX-heavy tasks, run `uxdrift` with a POV pack for consistent model reasoning:
+In `.workgraph/drift-policy.toml`:
+
+```toml
+[factory]
+enabled = true
+plan_only = false
+emit_followups = true
+hard_stop_on_failed_verification = true
+
+[sessiondriver]
+enabled = true
+require_session_driver = true
+allow_cli_fallback = false
+max_dispatch_per_repo = 2
+worker_timeout_seconds = 1800
+drift_failure_threshold = 3
+
+[secdrift]
+enabled = true
+emit_review_tasks = true
+
+[qadrift]
+enabled = true
+emit_review_tasks = true
+
+[plandrift]
+enabled = true
+emit_review_tasks = true
+require_integration_tests = true
+require_e2e_tests = true
+require_failure_loopbacks = true
+require_continuation_edges = true
+continuation_runtime = "double-shot-latte"
+orchestration_runtime = "claude-session-driver"
+allow_tmux_fallback = true
+
+[northstardrift]
+enabled = true
+emit_review_tasks = true
+emit_operator_prompts = true
+daily_rollup = true
+weekly_trends = true
+score_window = "1d"
+comparison_window = "7d"
+dirty_repo_blocks_auto_mutation = true
+```
+
+### 4) Keep control plane running
+
+Use daemon `ensure-running` for always-on supervision.
+
+## Validation
+
+From this repo:
 
 ```bash
-uxdrift wg check --task <id> --llm --pov doet-norman-v1 --write-log --create-followups
+./scripts/verify_ecosystem.sh
+./scripts/public_smoke_check.sh
 ```
 
-Or declare it in a task fence:
+## Repo Map
 
-````md
-```uxdrift
-schema = 1
-url = "http://localhost:3000"
-pages = ["/", "/checkout"]
-llm = true
-pov = "doet-norman-v1"
-pov_focus = ["discoverability", "feedback", "error_prevention_recovery"]
-```
-````
+Canonical suite map: [`ecosystem.toml`](./ecosystem.toml)
 
-### Brownfield Rebuilds
+Primary repos:
 
-Use `redrift` for phased v1→v2 rebuilds:
+- `driftdriver`
+- `coredrift`
+- `specdrift`, `datadrift`, `archdrift`, `depsdrift`
+- `uxdrift`, `therapydrift`, `yagnidrift`, `redrift`
 
-```bash
-./.workgraph/redrift wg execute --task <root_id> --v2-repo <path> --write-log --phase-checks
-```
+## Additional Docs
 
-Per-phase closeout:
-
-```bash
-./.workgraph/redrift wg verify --task redrift-exec-<phase>-<root_id> --write-log
-./.workgraph/drifts check --task redrift-exec-<phase>-<root_id> --write-log --create-followups
-./.workgraph/redrift wg commit --task redrift-exec-<phase>-<root_id> --phase <phase>
-```
-
-## Ecosystem Map
-
-### External Dependencies
-
-| Repo | Role | URL |
-|------|------|-----|
-| Workgraph | Task graph spine, `wg` CLI | https://github.com/graphwork/workgraph |
-| Amplifier | Agent runtime (Microsoft) | https://github.com/microsoft/amplifier |
-| superpowers | Core skills/workflow plugin (obra) | https://github.com/obra/superpowers |
-| superpowers-chrome | Chrome DevTools browser control (obra) | https://github.com/obra/superpowers-chrome |
-| claude-session-driver | Worker session orchestration (obra) | https://github.com/obra/claude-session-driver |
-| freshell | Shell framework (Dan Shapiro) | https://github.com/danshapiro/freshell |
-| mira-OSS | Discrete memory decay (Taylor Satula) | https://github.com/taylorsatula/mira-OSS |
-| beads | Git-backed task tracking (Steve Yegge) | https://github.com/steveyegge/beads |
-
-### Watched Users
-
-The ecosystem scanner monitors: [@obra](https://github.com/obra), [@ekg](https://github.com/ekg), [@danshapiro](https://github.com/danshapiro), [@taylorsatula](https://github.com/taylorsatula), [@steveyegge](https://github.com/steveyegge), [@ramparte](https://github.com/ramparte), [@dsifry](https://github.com/dsifry), [@Joi](https://github.com/Joi), [@2389](https://github.com/2389).
-
-The [vibez community](https://github.com/dbmcco/vibez-monitor) is an additional discovery source.
-
-## Acknowledgements
-
-Speedrift builds on [Workgraph](https://graphwork.github.io/), an independent project led by [Erik Garrison](https://github.com/ekg) and contributors. Speedrift is a separate ecosystem that uses Workgraph as its execution spine.
-
-## Status
-
-Public beta. APIs evolving. Modules usable now. Near-term goal: real-world dogfooding and measurable reliability gains.
-
-## Other
-
-- Known limitations: `docs/known-limitations.md`
-- Story deck source: `docs/decks/speedrift-ecosystem-story.html`
-- Legacy `dbmcco/speedrift` repo is a deprecation pointer — reinstall wrappers if migrating.
-- Validation: `./scripts/verify_ecosystem.sh` and `./scripts/public_smoke_check.sh`
-
-## License
-
-MIT. See `LICENSE`.
+- [Deck index](./docs/decks/README.md)
+- [Northstardrift design](./docs/northstardrift.md)
+- [Known limitations](./docs/known-limitations.md)
