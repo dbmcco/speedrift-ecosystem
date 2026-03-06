@@ -41,3 +41,7 @@ url = "https://github.com/dbmcco/yagnidrift"
 [repos.redrift]
 role = "lane"
 url = "https://github.com/dbmcco/redrift"
+
+[repos.atlas_product]
+role = "product"
+path = "../work/synth/atlas_product"
