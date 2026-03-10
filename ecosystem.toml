@@ -45,3 +45,19 @@ url = "https://github.com/dbmcco/redrift"
 [repos.atlas_product]
 role = "product"
 path = "../work/synth/atlas_product"
+
+[repos.lodestar]
+role = "product"
+path = "../lodestar"
+
+[repos.training-assistant]
+role = "product"
+path = "../training-assistant"
+
+[repos.news-briefing]
+role = "product"
+path = "../news-briefing"
+
+[repos.vibez-monitor]
+role = "product"
+path = "../../personal/vibez-monitor"
