@@ -14,6 +14,19 @@ It is now a model-mediated, multi-repo operations system with bounded autonomy.
 | Drift checks as one-off commands | Continuous cycle: observe -> prioritize -> plan -> execute -> record |
 | Visibility lives in scattered logs | Live dashboard + websocket + ledgers |
 | Upstream contribution is ad hoc | Structured upstream candidate pipeline |
+| Generic agent prompts at dispatch | Agency-composed role configuration per task |
+
+## Two-Layer Architecture
+
+| Layer | Systems | Owns |
+|---|---|---|
+| **Execution layer** | Workgraph + Agency | *Who* runs a task: task spine, agent identity, role composition, capability primitives |
+| **Judgment layer** | Planforge + Speedrift/Driftdriver | *What* to do: task contracts, drift checks, protocol wrapping, quality enforcement |
+
+Agency composes agent configurations; planforge wraps them with speedrift protocol envelopes
+(wg-contract blocks, drift check obligations, executor guidance). These two concerns are
+cleanly separated — Agency never needs speedrift primitives; planforge never manages
+agent composition internals.
 
 ## North Star
 
@@ -45,6 +58,22 @@ Runs centrally from this repo:
 - bounded factory execution loop
 - central register mirror + websocket broadcast
 - dashboard for narrated overview, graphs, and actionable queues
+
+### Execution Layer (wg + Agency)
+
+The task execution layer lives inside the worker plane:
+
+- **Workgraph** (`wg`) is the task spine — dependency graph, dispatch, loops, readiness tracking.
+- **Agency** (`agency serve`) is the agent composition engine — it owns *who* runs a task:
+  role identity, capability primitives, trade-off tuning.
+
+At dispatch time Agency composes the agent configuration for a task. Planforge/speedrift
+wrap the result with the speedrift protocol envelope (wg-contract block, executor guidance,
+drift check obligations). The two concerns stay separated: Agency never needs speedrift
+primitives; planforge never manages agent composition internals.
+
+Agency runs as an always-on launchd service on port `8000`. If unreachable, all dispatch
+continues with generic prompts — Agency enriches but is never required.
 
 ### Worker Plane
 
@@ -242,6 +271,27 @@ pipx install git+https://github.com/dbmcco/therapydrift.git
 pipx install git+https://github.com/dbmcco/yagnidrift.git
 pipx install git+https://github.com/dbmcco/redrift.git
 ```
+
+### 1b) Install Agency (execution layer)
+
+Agency is the agent composition engine that pairs with workgraph. Install once per machine.
+
+```bash
+# Install
+pipx install git+https://github.com/agentbureau/agency.git --python python3.14
+
+# Initialize primitive pool and configuration
+agency init
+
+# Load the launchd service (always-on, port 8000)
+launchctl load ~/Library/LaunchAgents/com.braydon.agency-serve.plist
+
+# Verify
+curl -s http://localhost:8000/health | python3 -m json.tool
+```
+
+The launchd plist is in `driftdriver/plists/com.braydon.agency-serve.plist`. Agency uses
+Ollama `qwen3-embedding:8b` for embeddings — no separate embedding service needed.
 
 ### 2) Enable a repo
 

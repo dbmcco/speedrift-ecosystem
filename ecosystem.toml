@@ -5,59 +5,337 @@ orchestrator = "driftdriver"
 [repos.driftdriver]
 role = "orchestrator"
 url = "https://github.com/dbmcco/driftdriver"
+tags = ["personal", "tool", "speedrift"]
+lifecycle = "active"
+daemon_posture = "always-on"
 
 [repos.coredrift]
 role = "baseline"
 url = "https://github.com/dbmcco/coredrift"
+tags = ["personal", "infrastructure", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.specdrift]
 role = "lane"
 url = "https://github.com/dbmcco/specdrift"
+tags = ["personal", "infrastructure", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.datadrift]
 role = "lane"
 url = "https://github.com/dbmcco/datadrift"
+tags = ["personal", "infrastructure", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.archdrift]
 role = "lane"
 url = "https://github.com/dbmcco/archdrift"
+tags = ["personal", "infrastructure", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.depsdrift]
 role = "lane"
 url = "https://github.com/dbmcco/depsdrift"
+tags = ["personal", "infrastructure", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.uxdrift]
 role = "lane"
 url = "https://github.com/dbmcco/uxdrift"
+tags = ["personal", "infrastructure", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.therapydrift]
 role = "lane"
 url = "https://github.com/dbmcco/therapydrift"
+tags = ["personal", "infrastructure", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.yagnidrift]
 role = "lane"
 url = "https://github.com/dbmcco/yagnidrift"
+tags = ["personal", "infrastructure", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.redrift]
 role = "lane"
 url = "https://github.com/dbmcco/redrift"
+tags = ["personal", "infrastructure", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.atlas_product]
 role = "product"
-path = "../work/synth/atlas_product"
+path = "../../work/synth/atlas_product"
+tags = ["company", "active-project"]
+lifecycle = "active"
+daemon_posture = "always-on"
 
 [repos.lodestar]
 role = "product"
 path = "../lodestar"
+tags = ["personal", "active-project", "lodestar"]
+lifecycle = "active"
+daemon_posture = "always-on"
 
 [repos.training-assistant]
 role = "product"
 path = "../training-assistant"
+tags = ["personal", "exploring"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
 
 [repos.news-briefing]
 role = "product"
 path = "../news-briefing"
+tags = ["personal", "archived"]
+lifecycle = "retired"
+daemon_posture = "never"
 
 [repos.vibez-monitor]
 role = "product"
 path = "../../personal/vibez-monitor"
+tags = ["personal", "active-project"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
+
+[repos.paia-os]
+role = "service"
+path = "../paia-os"
+tags = ["personal", "paia", "core"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-shell]
+role = "service"
+path = "../paia-shell"
+tags = ["personal", "paia", "core"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-program]
+role = "service"
+path = "../paia-program"
+tags = ["personal", "paia", "core"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-events]
+role = "service"
+path = "../paia-events"
+tags = ["personal", "paia", "infrastructure"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-identity]
+role = "service"
+path = "../paia-identity"
+tags = ["personal", "paia", "infrastructure"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-memory]
+role = "service"
+path = "../paia-memory"
+tags = ["personal", "paia", "infrastructure"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-work]
+role = "service"
+path = "../paia-work"
+tags = ["personal", "paia", "domain"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-meetings]
+role = "service"
+path = "../paia-meetings"
+tags = ["personal", "paia", "domain"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-n8n]
+role = "service"
+path = "../paia-n8n"
+tags = ["personal", "paia", "integration"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-agent-runtime]
+role = "service"
+path = "../paia-agent-runtime"
+tags = ["personal", "paia", "runtime"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.paia-os-wt-evidence-ledger-monitoring]
+role = "service"
+path = "../paia-os-wt-evidence-ledger-monitoring"
+tags = ["personal", "paia", "monitoring"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.samantha]
+role = "service"
+path = "../samantha"
+tags = ["personal", "agent"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.derek]
+role = "service"
+path = "../derek"
+tags = ["personal", "agent"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.ingrid]
+role = "service"
+path = "../ingrid"
+tags = ["personal", "agent"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.caroline]
+role = "service"
+path = "../caroline"
+tags = ["personal", "agent"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.folio]
+role = "service"
+path = "../folio"
+tags = ["personal", "active-project"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.lfw-ai-graph-crm]
+role = "service"
+path = "../lfw-ai-graph-crm"
+tags = ["personal", "active-project"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.grok-aurora-cli]
+role = "service"
+path = "../grok-aurora-cli"
+tags = ["personal", "tool"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.third-layer-news]
+role = "service"
+path = "../third-layer-news"
+tags = ["personal", "active-project"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.assistant-system]
+role = "service"
+path = "../assistant-system"
+tags = ["personal", "infrastructure"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
+[repos.garmin-connect-sync]
+role = "product"
+path = "../garmin-connect-sync"
+tags = ["personal", "integration"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
+
+[repos.lessons-mcp]
+role = "product"
+path = "../lessons-mcp"
+tags = ["personal", "tool", "mcp"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
+
+[repos.lfw-interview]
+role = "product"
+path = "../lfw-interview"
+tags = ["personal", "active-project"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
+
+[repos.synthyra-outreach-factory]
+role = "product"
+path = "../synthyra-outreach-factory"
+tags = ["company", "tool"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
+
+[repos.speedrift]
+role = "product"
+path = "../speedrift"
+tags = ["personal", "tool", "speedrift"]
+lifecycle = "maintenance"
+daemon_posture = "on-demand"
+
+[repos.speedrift-ecosystem-v2-run3]
+role = "experiment"
+path = "../speedrift-ecosystem-v2-run3"
+tags = ["personal", "speedrift", "experimental"]
+lifecycle = "experimental"
+daemon_posture = "never"
+
+[repos.speedrift-ecosystem-v2-run4]
+role = "experiment"
+path = "../speedrift-ecosystem-v2-run4"
+tags = ["personal", "speedrift", "experimental"]
+lifecycle = "experimental"
+daemon_posture = "never"
+
+[repos.speedrift-ecosystem-v2-run5]
+role = "experiment"
+path = "../speedrift-ecosystem-v2-run5"
+tags = ["personal", "speedrift", "experimental"]
+lifecycle = "experimental"
+daemon_posture = "never"
+
+# --- Upstream forks: repos we use but don't own ---
+# upstream_remote: the remote name pointing to the source-of-truth upstream
+
+[repos.freshell]
+role = "dependency"
+path = "../freshell"
+url = "https://github.com/danshapiro/freshell"
+upstream_remote = "origin"
+upstream_branch = "main"
+tags = ["dependency", "upstream-fork", "terminal"]
+lifecycle = "active"
+daemon_posture = "always-on"
+notes = "Dan Shapiro's browser terminal. We run it at port 3550. Track upstream for upgrades."
+
+[repos.workgraph]
+role = "dependency"
+path = "../workgraph"
+url = "https://github.com/graphwork/workgraph"
+upstream_remote = "origin"
+upstream_branch = "main"
+tags = ["dependency", "upstream-fork", "speedrift"]
+lifecycle = "active"
+daemon_posture = "always-on"
+notes = "Task graph spine. We have a fork at dbmcco/workgraph. upstream=graphwork/workgraph."
+
+[repos.agency]
+role = "dependency"
+path = "~/.local/pipx/venvs/agency-engine"
+url = "https://github.com/agentbureau/agency"
+upstream_remote = "origin"
+upstream_branch = "main"
+tags = ["dependency", "upstream-fork", "execution-layer", "agent-composition"]
+lifecycle = "active"
+daemon_posture = "always-on"
+service_port = 8000
+notes = "Agent identity and role composition engine. Installed via pipx as agency-engine. Always-on launchd service on port 8000. Pairs with workgraph as execution layer (wg=task spine, agency=who executes). Embedding: Ollama qwen3-embedding:8b (4096 dims) — no separate embedding service needed."
