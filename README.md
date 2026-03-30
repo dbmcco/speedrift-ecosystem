@@ -379,3 +379,33 @@ Primary repos:
 - [Deck index](./docs/decks/README.md)
 - [Northstardrift design](./docs/northstardrift.md)
 - [Known limitations](./docs/known-limitations.md)
+
+## Credits and Upstream Dependencies
+
+Speedrift builds on and is deeply grateful to the following upstream projects:
+
+### [Workgraph](https://github.com/graphwork/workgraph) — graphwork
+The task graph spine that everything runs on. Workgraph provides dependency tracking,
+agent dispatch loops, coordinator messaging, and the worker service model. Speedrift
+wraps and extends Workgraph but does not replace it — `wg` is the runtime source of
+truth for all task state. We maintain a fork at [dbmcco/workgraph](https://github.com/dbmcco/workgraph)
+and track upstream continuously via `upstream_tracker.py`.
+
+### [Agency](https://github.com/agentbureau/agency) — agentbureau
+The agent composition engine that forms the other half of the execution layer. Agency
+owns agent identity, role composition, capability primitive matching, and trade-off tuning.
+It runs as an always-on service that Speedrift integrates with at dispatch time — Agency
+composes *who* runs a task; Speedrift/planforge determines *what* to do and wraps the
+result with the protocol envelope. We install Agency via pipx and patch `embedding.py`
+to use the ecosystem's shared Ollama embedding service instead of bundled HuggingFace
+models. Upstream tracked in `upstream-config.toml`.
+
+### [Freshell](https://github.com/danshapiro/freshell) — Dan Shapiro
+A browser-based terminal that gives agents and operators a persistent PTY session
+accessible over the web. Used in the ecosystem hub for live terminal access to any
+enrolled repo. We run it at port 3550 and track upstream for upgrades. Maintained as
+a fork at [dbmcco/freshell](https://github.com/dbmcco/freshell).
+
+---
+
+If you build something useful on top of these projects, contribute upstream.
