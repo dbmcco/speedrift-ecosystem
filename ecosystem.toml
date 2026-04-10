@@ -177,6 +177,13 @@ tags = ["personal", "paia", "runtime"]
 lifecycle = "active"
 daemon_posture = "always-on"
 
+[repos.paia-agents]
+role = "service"
+path = "../paia-agents"
+tags = ["personal", "paia", "agent-family"]
+lifecycle = "active"
+daemon_posture = "always-on"
+
 [repos.paia-os-wt-evidence-ledger-monitoring]
 role = "service"
 path = "../paia-os-wt-evidence-ledger-monitoring"
@@ -186,28 +193,28 @@ daemon_posture = "always-on"
 
 [repos.samantha]
 role = "service"
-path = "../samantha"
+path = "../paia-agents/samantha"
 tags = ["personal", "agent"]
 lifecycle = "active"
 daemon_posture = "always-on"
 
 [repos.derek]
 role = "service"
-path = "../derek"
+path = "../paia-agents/derek"
 tags = ["personal", "agent"]
 lifecycle = "active"
 daemon_posture = "always-on"
 
 [repos.ingrid]
 role = "service"
-path = "../ingrid"
+path = "../paia-agents/ingrid"
 tags = ["personal", "agent"]
 lifecycle = "active"
 daemon_posture = "always-on"
 
 [repos.caroline]
 role = "service"
-path = "../caroline"
+path = "../paia-agents/caroline"
 tags = ["personal", "agent"]
 lifecycle = "active"
 daemon_posture = "always-on"
