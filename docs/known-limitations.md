@@ -1,6 +1,6 @@
 # Known Limitations (Public Beta)
 
-Last updated: March 6, 2026.
+Last updated: April 15, 2026.
 
 ## Packaging
 

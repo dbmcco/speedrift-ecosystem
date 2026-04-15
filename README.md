@@ -398,7 +398,7 @@ It runs as an always-on service that Speedrift integrates with at dispatch time 
 composes *who* runs a task; Speedrift/planforge determines *what* to do and wraps the
 result with the protocol envelope. We install Agency via pipx and patch `embedding.py`
 to use the ecosystem's shared Ollama embedding service instead of bundled HuggingFace
-models. Upstream tracked in `upstream-config.toml`.
+models.
 
 ### [Freshell](https://github.com/danshapiro/freshell) — Dan Shapiro
 A browser-based terminal that gives agents and operators a persistent PTY session
