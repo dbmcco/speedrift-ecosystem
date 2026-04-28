@@ -237,6 +237,38 @@ The ecosystem should continuously produce upstream candidate packets:
 3. emit draft-PR candidate tasks
 4. track opened/merged outcomes in the register
 
+## Upstream Adoption Sentinel
+
+Speedrift now tracks upstream adoption lag explicitly, so coding-agent commit volume
+does not let important WorkGraph changes disappear into a long backlog.
+
+The sentinel runs from `driftdriver` and records three pieces of state:
+
+- upstream HEAD: what Eric/upstream has shipped
+- adopted SHA: what Speedrift has consciously integrated
+- divergence age: how long the adopted line has not contained upstream
+
+The current WorkGraph policy is intentionally tight:
+
+- `lag_window_commits = 5`
+- `max_lag_days = 3`
+- CLI/API/schema changes create WorkGraph-visible work even below the commit threshold
+
+Operator entry points:
+
+```bash
+cd /Users/braydon/projects/experiments/driftdriver
+
+# one sentinel pass
+uv run driftdriver --dir "$PWD" upstream-tracker --json
+
+# docs
+open docs/upstream-adoption-sentinel.md
+```
+
+The ecosystem hub runs the sentinel every collector tick, and
+`scripts/daily_ecosystem_eval.sh` runs it before broader ecosystem review.
+
 ## Ecosystem Impact Model (Mechanics Only)
 
 Show formulas and illustrative values, not production data:
@@ -269,14 +301,25 @@ Design contract: [docs/northstardrift.md](./docs/northstardrift.md)
 
 ## Daemon + Endpoints
 
-Run the ecosystem daemon continuously and codify the port.
+Run the ecosystem daemon continuously and codify the port. The live setup is
+launchd-managed so it survives shell exits and restarts automatically.
 
 From `driftdriver` repo:
 
 ```bash
 ECOSYSTEM_HUB_CENTRAL_REPO=/Users/braydon/projects/experiments/speedrift-ecosystem/.workgraph/service/ecosystem-central \
-  scripts/ecosystem_hub_daemon.sh ensure-running
+  scripts/ecosystem_hub_daemon.sh install-launchd
+
+scripts/ecosystem_hub_daemon.sh status
+scripts/ecosystem_hub_daemon.sh launchd-status
 ```
+
+LaunchAgent contract:
+
+- label: `com.speedrift.ecosystem-hub`
+- plist: `~/Library/LaunchAgents/com.speedrift.ecosystem-hub.plist`
+- mode: `RunAtLoad` + `KeepAlive`
+- central register: `.workgraph/service/ecosystem-central`
 
 Default endpoint contract:
 
@@ -381,7 +424,25 @@ dirty_repo_blocks_auto_mutation = true
 
 ### 4) Keep control plane running
 
-Use daemon `ensure-running` for always-on supervision.
+Use the launchd-backed daemon wrapper for always-on supervision:
+
+```bash
+cd /Users/braydon/projects/experiments/driftdriver
+
+ECOSYSTEM_HUB_CENTRAL_REPO=/Users/braydon/projects/experiments/speedrift-ecosystem/.workgraph/service/ecosystem-central \
+  scripts/ecosystem_hub_daemon.sh install-launchd
+
+scripts/ecosystem_hub_daemon.sh status
+scripts/ecosystem_hub_daemon.sh launchd-status
+scripts/ecosystem_hub_daemon.sh logs
+```
+
+`ensure-running` is safe to run repeatedly if an agent only needs to repair or
+confirm the service:
+
+```bash
+scripts/ecosystem_hub_daemon.sh ensure-running
+```
 
 ## Validation
 
@@ -396,12 +457,18 @@ From this repo:
 
 Canonical suite map: [`ecosystem.toml`](./ecosystem.toml)
 
-Primary repos:
+Primary Speedrift-owned repos:
 
 - `driftdriver`
 - `coredrift`
 - `specdrift`, `datadrift`, `archdrift`, `depsdrift`
 - `uxdrift`, `therapydrift`, `yagnidrift`, `redrift`
+
+Ecosystem dependencies watched by the upstream sentinel:
+
+- `workgraph`: execution spine; Eric/upstream changes are checked for adoption lag
+- `agency`: agent composition runtime; launchd-backed but optional at dispatch time
+- `freshell`: browser terminal bridge; tracked for upstream divergence and upgrades
 
 ## Additional Docs
 

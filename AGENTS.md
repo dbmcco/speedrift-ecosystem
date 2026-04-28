@@ -40,8 +40,20 @@ driftdriver attractor run --json
 - Refresh state: `driftdriver --dir "$PWD" --json speedriftd status --refresh`
 - Arm repo: `driftdriver --dir "$PWD" speedriftd status --set-mode supervise --lease-owner <agent> --reason "reason"`
 - Disarm: `driftdriver --dir "$PWD" speedriftd status --set-mode observe --release-lease --reason "done"`
-- For ecosystem-wide visibility, use the hub on port `8777`:
+- For ecosystem-wide visibility, use the launchd-backed hub on port `8777`:
   - `cd /Users/braydon/projects/experiments/driftdriver && scripts/ecosystem_hub_daemon.sh url`
+
+### Always-On Ecosystem Hub
+- LaunchAgent label: `com.speedrift.ecosystem-hub`
+- Plist: `~/Library/LaunchAgents/com.speedrift.ecosystem-hub.plist`
+- Verify: `cd /Users/braydon/projects/experiments/driftdriver && scripts/ecosystem_hub_daemon.sh launchd-status`
+- Repair: `cd /Users/braydon/projects/experiments/driftdriver && scripts/ecosystem_hub_daemon.sh ensure-running`
+
+### Upstream Adoption Sentinel
+- Driftdriver tracks upstream/adopted/diverged SHAs for WorkGraph and other ecosystem dependencies.
+- WorkGraph policy: `lag_window_commits = 5`, `max_lag_days = 3`.
+- API/schema surface changes create WorkGraph-visible work immediately, even when commit count is small.
+- One-shot check: `cd /Users/braydon/projects/experiments/driftdriver && uv run driftdriver --dir "$PWD" upstream-tracker --json`
 
 ### Attractor Loop (Convergence Engine)
 - Each repo declares a target attractor in `drift-policy.toml`: `onboarded` -> `production-ready` -> `hardened`
@@ -54,6 +66,7 @@ driftdriver attractor run --json
 ### What Happens Automatically
 - **Drift task guard**: follow-up tasks are deduped + capped at 3 per lane per repo
 - **Attractor convergence**: repos are driven toward their declared target state via the attractor loop
+- **Upstream adoption checks**: hub/daily eval emit tasks for lag, compatibility failures, and API/schema changes
 - **Notifications**: significant findings alert via terminal/webhook/wg-notify
 - **Prompt evolution**: recurring drift patterns trigger `wg evolve` to teach agents
 - **Outcome learning**: resolution rates feed back into notification significance scoring
