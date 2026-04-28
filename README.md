@@ -1,7 +1,14 @@
 # Speedrift Ecosystem
 
-Speedrift is no longer just a repo-local drift checker.
-It is now a model-mediated, multi-repo operations system with bounded autonomy.
+Speedrift is an operations control plane for agent-run software work.
+
+Each repo keeps its own Workgraph as the source of truth. Speedrift watches those repo graphs,
+detects stalls and drift, plans bounded corrective actions, dispatches agents when policy allows,
+and writes every decision back to tasks, logs, and ledgers.
+
+Bounded autonomy means Speedrift can restart safe services, emit corrective tasks, and run
+deterministic handlers under policy. It cannot rewrite unrelated local work without a trace, bypass
+verification gates, or perform destructive git history operations.
 
 <a href="https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html">
   <img src="./docs/assets/speedrift-ecosystem-summary.svg" alt="Speedrift ecosystem summary: repo planes feed a central control plane, which plans bounded actions, coordinates workers, records ledgers, and writes corrective tasks back." />
@@ -12,6 +19,10 @@ It is now a model-mediated, multi-repo operations system with bounded autonomy.
 If you only skim one thing, use the image above: Speedrift keeps local Workgraphs authoritative while a
 central control plane observes the repo portfolio, chooses bounded safe actions, and writes decisions
 back into repo tasks and ledgers.
+
+Example: if a repo has ready work but no heartbeat, Speedrift can notice the stall, score the risk,
+create or dispatch a bounded follow-up task, and record the decision without rewriting unrelated
+local work.
 
 - **One-screen explainer:** [`docs/assets/speedrift-ecosystem-summary.svg`](./docs/assets/speedrift-ecosystem-summary.svg)
 - **Keynote-style story deck:** [Speedrift Ecosystem Story](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)
