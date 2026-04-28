@@ -17,7 +17,7 @@ code, specs, and intent in sync without hard-blocking work.
 # Tailscale: http://100.77.214.44:8777/
 
 # Create tasks with current wg flags
-wg add "Title" --after <dep-id> --verify "test command"
+wg add "Title" --after <dep-id> --no-place --verify "test command"
 
 # Attractor loop: check convergence status or run convergence
 driftdriver attractor status --json
