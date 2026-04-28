@@ -1,5 +1,6 @@
 # Speedrift Decks
 
+- `../assets/speedrift-ecosystem-summary.svg`: README-first summary image for readers who need the whole system at a glance
 - `speedrift-ecosystem-story.html`: GitHub-facing narrative for the autonomous speedrift ecosystem
   - mental model shift: repo-local lane runner -> ecosystem operating fabric
   - architecture: repo plane + control plane + worker plane
@@ -24,4 +25,10 @@ Public URL:
 
 ```text
 https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html
+```
+
+README entry point:
+
+```text
+../../README.md#start-here
 ```

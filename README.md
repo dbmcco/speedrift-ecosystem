@@ -3,7 +3,25 @@
 Speedrift is no longer just a repo-local drift checker.
 It is now a model-mediated, multi-repo operations system with bounded autonomy.
 
-**Story deck:** [Speedrift Ecosystem Story](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)
+<a href="https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html">
+  <img src="./docs/assets/speedrift-ecosystem-summary.svg" alt="Speedrift ecosystem summary: repo planes feed a central control plane, which plans bounded actions, coordinates workers, records ledgers, and writes corrective tasks back." />
+</a>
+
+## Start Here
+
+If you only skim one thing, use the image above: Speedrift keeps local Workgraphs authoritative while a
+central control plane observes the repo portfolio, chooses bounded safe actions, and writes decisions
+back into repo tasks and ledgers.
+
+- **One-screen explainer:** [`docs/assets/speedrift-ecosystem-summary.svg`](./docs/assets/speedrift-ecosystem-summary.svg)
+- **Keynote-style story deck:** [Speedrift Ecosystem Story](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)
+- **Local deck file:** [`docs/decks/speedrift-ecosystem-story.html`](./docs/decks/speedrift-ecosystem-story.html)
+
+Deck previews:
+
+| Story | Architecture | Authority | Scorecard |
+|---|---|---|---|
+| [![Story deck title slide](./docs/decks/previews/slide-1.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html#slide-1) | [![Three-plane architecture slide](./docs/decks/previews/slide-3.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html#slide-3) | [![Authority contract slide](./docs/decks/previews/slide-4.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html#slide-4) | [![Impact scorecard slide](./docs/decks/previews/slide-7.png)](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html#slide-7) |
 
 ## Mental Model Shift
 

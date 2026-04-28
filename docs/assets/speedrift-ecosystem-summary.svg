@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc" viewBox="0 0 1200 675">
+  <title id="title">Speedrift ecosystem summary</title>
+  <desc id="desc">A one-screen explainer showing repo-local Workgraphs mirrored into a central Speedrift control plane, which observes, prioritizes, plans, executes bounded handlers, records ledgers, and writes corrective tasks back to repos.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffaf2" />
+      <stop offset="1" stop-color="#edf4ee" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#17202a" flood-opacity="0.13" />
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#6f7b67" />
+    </marker>
+    <style>
+      .bg { fill: url(#bg); }
+      .card { fill: rgba(255,255,255,0.9); stroke: rgba(25,34,42,0.16); stroke-width: 2; filter: url(#shadow); }
+      .soft { fill: #526171; font-family: Inter, Avenir Next, Segoe UI, sans-serif; }
+      .ink { fill: #121a22; font-family: Inter, Avenir Next, Segoe UI, sans-serif; }
+      .display { fill: #121a22; font-family: Georgia, Iowan Old Style, serif; font-weight: 700; }
+      .accent { fill: #e84f2b; }
+      .sage { fill: #5f784d; }
+      .label { font-size: 20px; font-weight: 700; }
+      .small { font-size: 17px; }
+      .tiny { font-size: 14px; }
+      .line { stroke: #6f7b67; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+      .loop { stroke: #e84f2b; stroke-width: 5; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="675" rx="36" />
+  <text x="74" y="84" class="display" font-size="48">Speedrift is the operating fabric for many repos</text>
+  <text x="78" y="125" class="soft small">Local Workgraphs stay authoritative. The ecosystem control plane watches them, chooses safe actions, and writes the trail back.</text>
+
+  <g transform="translate(70 172)">
+    <rect class="card" width="278" height="326" rx="24" />
+    <text x="28" y="48" class="ink label">Repo planes</text>
+    <text x="28" y="78" class="soft small">Each repo owns local truth.</text>
+    <g transform="translate(28 112)">
+      <rect width="222" height="54" rx="13" fill="#fff7ef" stroke="#dfb8a3" />
+      <text x="18" y="33" class="ink small">.workgraph + contracts</text>
+    </g>
+    <g transform="translate(28 184)">
+      <rect width="222" height="54" rx="13" fill="#f8fbf6" stroke="#bfceb7" />
+      <text x="18" y="33" class="ink small">drift lanes + hooks</text>
+    </g>
+    <g transform="translate(28 256)">
+      <rect width="222" height="54" rx="13" fill="#ffffff" stroke="#d9c8b8" />
+      <text x="18" y="33" class="ink small">tests, logs, followups</text>
+    </g>
+  </g>
+
+  <g transform="translate(462 158)">
+    <rect class="card" width="306" height="354" rx="26" />
+    <text x="35" y="52" class="ink label">Control plane</text>
+    <text x="35" y="82" class="soft small">Daemonized supervision on :8777</text>
+    <g transform="translate(34 116)">
+      <circle cx="38" cy="38" r="34" fill="#fff0e8" stroke="#e9b29d" stroke-width="2" />
+      <text x="38" y="43" text-anchor="middle" class="accent tiny">1</text>
+      <text x="90" y="33" class="ink small">Observe</text>
+      <text x="90" y="55" class="soft tiny">snapshots, stalls, queues</text>
+    </g>
+    <g transform="translate(34 188)">
+      <circle cx="38" cy="38" r="34" fill="#ffffff" stroke="#d9c8b8" stroke-width="2" />
+      <text x="38" y="43" text-anchor="middle" class="ink tiny">2</text>
+      <text x="90" y="33" class="ink small">Prioritize + plan</text>
+      <text x="90" y="55" class="soft tiny">risk, pressure, policy budgets</text>
+    </g>
+    <g transform="translate(34 260)">
+      <circle cx="38" cy="38" r="34" fill="#f2f7ef" stroke="#b7c8aa" stroke-width="2" />
+      <text x="38" y="43" text-anchor="middle" class="sage tiny">3</text>
+      <text x="90" y="33" class="ink small">Execute + record</text>
+      <text x="90" y="55" class="soft tiny">safe handlers, ledgers, websocket</text>
+    </g>
+  </g>
+
+  <g transform="translate(882 172)">
+    <rect class="card" width="248" height="326" rx="24" />
+    <text x="28" y="48" class="ink label">Worker plane</text>
+    <text x="28" y="78" class="soft small">Agents do scoped work.</text>
+    <g transform="translate(28 112)">
+      <rect width="192" height="54" rx="13" fill="#fff7ef" stroke="#dfb8a3" />
+      <text x="18" y="33" class="ink small">Claude / Codex</text>
+    </g>
+    <g transform="translate(28 184)">
+      <rect width="192" height="54" rx="13" fill="#ffffff" stroke="#d9c8b8" />
+      <text x="18" y="33" class="ink small">sessiondriver</text>
+    </g>
+    <g transform="translate(28 256)">
+      <rect width="192" height="54" rx="13" fill="#f8fbf6" stroke="#bfceb7" />
+      <text x="18" y="33" class="ink small">bounded actions</text>
+    </g>
+  </g>
+
+  <path class="line" d="M354 310C392 310 418 310 456 310" />
+  <path class="line" d="M773 310C812 310 836 310 875 310" />
+  <path class="loop" d="M885 448C710 604 322 586 180 506" />
+  <text x="390" y="608" class="ink label">Core loop: observe -> prioritize -> plan -> execute -> record -> write back</text>
+  <text x="392" y="637" class="soft small">Central automation is bounded: no silent unrelated mutation, no destructive git history, no bypassing verification.</text>
+</svg>
