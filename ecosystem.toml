@@ -222,9 +222,11 @@ daemon_posture = "always-on"
 [repos.folio]
 role = "service"
 path = "../folio"
-tags = ["personal", "active-project"]
+tags = ["personal", "active-project", "cli"]
 lifecycle = "active"
 daemon_posture = "always-on"
+cli = "folio"
+cli_install = "uv tool install -e /Users/braydon/projects/experiments/folio"
 
 [repos.lfw-ai-graph-crm]
 role = "service"

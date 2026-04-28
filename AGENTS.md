@@ -17,9 +17,9 @@ code, specs, and intent in sync without hard-blocking work.
 # Tailscale: http://100.77.214.44:8777/
 
 # Create tasks with current wg flags
-wg add "Title" --after <dep-id> --no-place --verify "test command"
+wg add "Title" --after <dep-id> --verify "test command"
 
-# Attractor loop — check convergence status or run convergence
+# Attractor loop: check convergence status or run convergence
 driftdriver attractor status --json
 driftdriver attractor run --json
 ```
@@ -30,18 +30,24 @@ driftdriver attractor run --json
 - Before completion: `./.workgraph/handlers/task-completing.sh --cli codex`
 - On error: `./.workgraph/handlers/agent-error.sh --cli codex`
 
+### Drift Protocol
+- Pre-check: `./.workgraph/drifts check --task <TASK_ID> --write-log`
+- Post-check: `./.workgraph/drifts check --task <TASK_ID> --write-log --create-followups`
+
 ### Runtime Authority
 - Workgraph is the task/dependency source of truth. `speedriftd` is the repo-local supervisor.
 - Sessions default to `observe`. Do not use `wg service start` as a generic kickoff.
 - Refresh state: `driftdriver --dir "$PWD" --json speedriftd status --refresh`
 - Arm repo: `driftdriver --dir "$PWD" speedriftd status --set-mode supervise --lease-owner <agent> --reason "reason"`
 - Disarm: `driftdriver --dir "$PWD" speedriftd status --set-mode observe --release-lease --reason "done"`
+- For ecosystem-wide visibility, use the hub on port `8777`:
+  - `cd /Users/braydon/projects/experiments/driftdriver && scripts/ecosystem_hub_daemon.sh url`
 
 ### Attractor Loop (Convergence Engine)
-- Each repo declares a target attractor in `drift-policy.toml`: `onboarded` → `production-ready` → `hardened`
-- The loop runs diagnose → plan → execute → re-diagnose until convergence or circuit breaker
+- Each repo declares a target attractor in `drift-policy.toml`: `onboarded` -> `production-ready` -> `hardened`
+- The loop runs diagnose -> plan -> execute -> re-diagnose until convergence or circuit breaker.
 - Circuit breakers: max 3 passes, plateau detection, task budget cap (30)
-- Bundles (reusable fix templates) are matched to findings automatically; unmatched findings escalate
+- Bundles (reusable fix templates) are matched to findings automatically; unmatched findings escalate.
 - Check status: `driftdriver attractor status --json`
 - Run convergence: `driftdriver attractor run --json`
 
