@@ -3,76 +3,221 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Speedrift Ecosystem Docs</title>
+    <title>Speedrift Ecosystem Story</title>
     <style>
       :root {
         --bg: #f6efe4;
         --ink: #12161d;
         --soft: #4b5968;
+        --line: rgba(18, 22, 29, 0.14);
+        --panel: rgba(255, 255, 255, 0.82);
         --accent: #ef4e2a;
+        --sage: #71885e;
       }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: "Space Grotesk", "Avenir Next", sans-serif;
+        font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
         color: var(--ink);
-        background: radial-gradient(circle at 12% 12%, rgba(239, 78, 42, 0.15), transparent 44%), var(--bg);
-        display: grid;
-        place-items: center;
+        background:
+          radial-gradient(circle at 12% 10%, rgba(239, 78, 42, 0.16), transparent 42%),
+          radial-gradient(circle at 88% 12%, rgba(113, 136, 94, 0.18), transparent 34%),
+          var(--bg);
       }
+
       main {
-        width: min(900px, 92vw);
-        background: rgba(255, 255, 255, 0.78);
-        border: 1px solid rgba(18, 22, 29, 0.12);
-        border-radius: 20px;
+        width: min(1180px, 94vw);
+        margin: 0 auto;
+        padding: 28px 0 36px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.74fr) minmax(0, 1.26fr);
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .intro,
+      .preview,
+      .links {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: 0 18px 48px rgba(18, 22, 29, 0.12);
+      }
+
+      .intro {
         padding: 28px;
+        display: grid;
+        gap: 18px;
+        align-content: center;
       }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--accent);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
       h1 {
-        margin: 0 0 10px 0;
-        font-size: 2rem;
+        margin: 0;
+        font-size: clamp(2.3rem, 5vw, 4.6rem);
+        line-height: 1.02;
+        letter-spacing: 0;
       }
+
       p {
-        margin: 0 0 16px 0;
+        margin: 0;
         color: var(--soft);
+        line-height: 1.5;
+        font-size: 1rem;
       }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
       a {
         color: var(--accent);
-        font-weight: 600;
+        font-weight: 700;
         text-decoration: none;
       }
+
       a:hover {
         text-decoration: underline;
       }
-      ul {
-        margin: 0;
-        padding-left: 20px;
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        min-height: 42px;
+        border: 1px solid var(--line);
+        padding: 10px 14px;
+        background: #fff;
+        color: var(--ink);
+        font-weight: 700;
       }
-      li {
-        margin: 8px 0;
+
+      .button.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .preview {
+        min-height: min(70vh, 680px);
+        overflow: hidden;
+      }
+
+      iframe {
+        width: 100%;
+        height: 100%;
+        min-height: min(70vh, 680px);
+        border: 0;
+        display: block;
+        background: #fff;
+      }
+
+      .links {
+        padding: 18px;
+      }
+
+      .links ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .links li {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.74);
+        padding: 12px;
+        min-height: 72px;
+      }
+
+      .links span {
+        display: block;
+        margin-top: 4px;
+        color: var(--soft);
+        font-size: 0.9rem;
+        line-height: 1.35;
+      }
+
+      @media (max-width: 860px) {
+        main {
+          width: min(720px, 94vw);
+        }
+
+        .hero,
+        .links ul {
+          grid-template-columns: 1fr;
+        }
+
+        .preview,
+        iframe {
+          min-height: 560px;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>Speedrift Ecosystem Docs</h1>
-      <p>Interactive decks and docs published via GitHub Pages.</p>
-      <ul>
-        <li>
-          <a href="./decks/speedrift-ecosystem-story.html">Speedrift Ecosystem Story Deck</a>
-        </li>
-        <li>
-          <a href="./assets/speedrift-ecosystem-summary.svg">Speedrift Ecosystem Summary Image</a>
-        </li>
-        <li>
-          <a href="./northstardrift.md">Northstardrift Design</a>
-        </li>
-        <li>
-          <a href="./known-limitations.md">Known Limitations</a>
-        </li>
-        <li>
-          <a href="../README.md">Repository README</a>
-        </li>
-      </ul>
+      <section class="hero" aria-label="Speedrift ecosystem story deck">
+        <div class="intro">
+          <p class="eyebrow">Speedrift Ecosystem</p>
+          <h1>Autonomous drift-control at repo scale</h1>
+          <p>
+            The public GitHub Pages entry point loads the story deck directly so
+            operators and collaborators see the system narrative, not just source files.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="./decks/speedrift-ecosystem-story.html">Open Deck</a>
+            <a class="button" href="https://github.com/dbmcco/speedrift-ecosystem">View Source</a>
+          </div>
+        </div>
+        <div class="preview">
+          <iframe
+            title="Speedrift Ecosystem Story Deck"
+            src="./decks/speedrift-ecosystem-story.html"
+          ></iframe>
+        </div>
+      </section>
+
+      <nav class="links" aria-label="Supporting documents">
+        <ul>
+          <li>
+            <a href="./decks/speedrift-ecosystem-story.html">Story deck</a>
+            <span>Full-screen deck with keyboard, click, and touch navigation.</span>
+          </li>
+          <li>
+            <a href="./assets/speedrift-ecosystem-summary.svg">Summary image</a>
+            <span>One-screen architecture summary used by the README.</span>
+          </li>
+          <li>
+            <a href="./northstardrift.md">Northstardrift</a>
+            <span>Scoring, narration, and task-emission contract.</span>
+          </li>
+          <li>
+            <a href="./known-limitations.md">Known limitations</a>
+            <span>Current boundaries and explicit follow-up areas.</span>
+          </li>
+        </ul>
+      </nav>
     </main>
   </body>
 </html>
