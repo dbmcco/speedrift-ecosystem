@@ -1,73 +1,99 @@
 <!-- driftdriver-codex:start -->
-## Speedrift Ecosystem
+## Driftdriver Integration Protocol
 
-**Speedrift** is the development quality system across this workspace. It combines
-[Workgraph](https://github.com/graphwork/workgraph) (task spine) with
-[Driftdriver](https://github.com/dbmcco/driftdriver) (drift orchestrator) to keep
-code, specs, and intent in sync without hard-blocking work.
+When working on tasks in this project, follow this protocol:
 
-### Quick Reference
+### At Session Start
+Run: `./.workgraph/handlers/session-start.sh --cli codex`
 
-```bash
-# Drift-check a task (run at start + before completion)
-./.workgraph/drifts check --task <id> --write-log --create-followups
+### When Claiming a Task
+Run: `./.workgraph/handlers/task-claimed.sh --cli codex`
 
-# Ecosystem dashboard
-# Local:     http://127.0.0.1:8777/
-# Tailscale: http://100.77.214.44:8777/
+### Before Completing a Task
+Run: `./.workgraph/handlers/task-completing.sh --cli codex`
 
-# Create tasks with current wg flags
-wg add "Title" --after <dep-id> --no-place --verify "test command"
-
-# Attractor loop: check convergence status or run convergence
-driftdriver attractor status --json
-driftdriver attractor run --json
-```
-
-### Lifecycle Hooks
-- Session start: `./.workgraph/handlers/session-start.sh --cli codex`
-- Task claimed: `./.workgraph/handlers/task-claimed.sh --cli codex`
-- Before completion: `./.workgraph/handlers/task-completing.sh --cli codex`
-- On error: `./.workgraph/handlers/agent-error.sh --cli codex`
+### On Error
+Run: `./.workgraph/handlers/agent-error.sh --cli codex`
 
 ### Drift Protocol
 - Pre-check: `./.workgraph/drifts check --task <TASK_ID> --write-log`
 - Post-check: `./.workgraph/drifts check --task <TASK_ID> --write-log --create-followups`
 
-### Runtime Authority
-- Workgraph is the task/dependency source of truth. `speedriftd` is the repo-local supervisor.
-- Sessions default to `observe`. Do not use `wg service start` as a generic kickoff.
-- Refresh state: `driftdriver --dir "$PWD" --json speedriftd status --refresh`
-- Arm repo: `driftdriver --dir "$PWD" speedriftd status --set-mode supervise --lease-owner <agent> --reason "reason"`
-- Disarm: `driftdriver --dir "$PWD" speedriftd status --set-mode observe --release-lease --reason "done"`
-- For ecosystem-wide visibility, use the launchd-backed hub on port `8777`:
+## Speedrift Ecosystem Protocol
+
+- Workgraph is the source of truth for tasks and dependencies.
+- `speedriftd` is the repo-local runtime supervisor. Interactive sessions do not own dispatch by default.
+- Default posture is `observe`. Do not use `wg service start` as a generic way to kick off autonomous work.
+- Refresh repo runtime state before acting: `driftdriver --dir "$PWD" --json speedriftd status --refresh`
+- If the user wants background execution in this repo, arm it explicitly:
+  - `driftdriver --dir "$PWD" speedriftd status --set-mode supervise --lease-owner <agent-name> --reason "explicit repo supervision requested"`
+  - `driftdriver --dir "$PWD" speedriftd status --set-mode autonomous --lease-owner <agent-name> --reason "explicit autonomous execution requested"`
+- When the task is complete or the repo should stop self-dispatching, return it to passive mode:
+  - `driftdriver --dir "$PWD" speedriftd status --set-mode observe --release-lease --reason "return repo to observation"`
+- To see the broader ecosystem hub and current port 8777 URLs:
   - `cd /Users/braydon/projects/experiments/driftdriver && scripts/ecosystem_hub_daemon.sh url`
 
-### Always-On Ecosystem Hub
+## tmux Agent Monitor
+
+A heartbeat daemon watches all tmux panes and tracks running coding agents.
+
+### Check What Agents Are Running
+
+```bash
+# Agents relevant to current repo (default: uses cwd)
+driftdriver tmux-monitor status
+
+# Agents in a specific repo
+driftdriver tmux-monitor status --repo driftdriver
+
+# All agents (including unrelated)
+driftdriver tmux-monitor status --all
+
+# JSON output for programmatic consumption
+driftdriver tmux-monitor status --json
+driftdriver tmux-monitor status --repo paia-program --json
+```
+
+Each agent shows session, pane, type, title, current task, summary, cwd,
+relevance, and the `tmux send-keys` target for control.
+
+Use `controllable: true` and the `pane_id` field to send commands:
+
+```bash
+tmux send-keys -t %272 "your command here" Enter
+```
+
+Check this before starting repo work so same-repo agents do not conflict.
+
+## Always-On Ecosystem Hub
+
 - LaunchAgent label: `com.speedrift.ecosystem-hub`
 - Plist: `~/Library/LaunchAgents/com.speedrift.ecosystem-hub.plist`
 - Verify: `cd /Users/braydon/projects/experiments/driftdriver && scripts/ecosystem_hub_daemon.sh launchd-status`
 - Repair: `cd /Users/braydon/projects/experiments/driftdriver && scripts/ecosystem_hub_daemon.sh ensure-running`
 
-### Upstream Adoption Sentinel
-- Driftdriver tracks upstream/adopted/diverged SHAs for WorkGraph and other ecosystem dependencies.
+## Upstream Adoption Sentinel
+
+- Driftdriver tracks upstream/adopted/diverged SHAs for Workgraph and other ecosystem dependencies.
 - WorkGraph policy: `lag_window_commits = 5`, `max_lag_days = 3`.
 - API/schema surface changes create WorkGraph-visible work immediately, even when commit count is small.
 - One-shot check: `cd /Users/braydon/projects/experiments/driftdriver && uv run driftdriver --dir "$PWD" upstream-tracker --json`
 
-### Attractor Loop (Convergence Engine)
-- Each repo declares a target attractor in `drift-policy.toml`: `onboarded` -> `production-ready` -> `hardened`
+## Attractor Loop
+
+- Each repo declares a target attractor in `drift-policy.toml`: `onboarded` -> `production-ready` -> `hardened`.
 - The loop runs diagnose -> plan -> execute -> re-diagnose until convergence or circuit breaker.
-- Circuit breakers: max 3 passes, plateau detection, task budget cap (30)
-- Bundles (reusable fix templates) are matched to findings automatically; unmatched findings escalate.
+- Circuit breakers: max 3 passes, plateau detection, task budget cap 30.
+- Bundles are matched to findings automatically; unmatched findings escalate.
 - Check status: `driftdriver attractor status --json`
 - Run convergence: `driftdriver attractor run --json`
 
-### What Happens Automatically
-- **Drift task guard**: follow-up tasks are deduped + capped at 3 per lane per repo
-- **Attractor convergence**: repos are driven toward their declared target state via the attractor loop
-- **Upstream adoption checks**: hub/daily eval emit tasks for lag, compatibility failures, and API/schema changes
-- **Notifications**: significant findings alert via terminal/webhook/wg-notify
-- **Prompt evolution**: recurring drift patterns trigger `wg evolve` to teach agents
-- **Outcome learning**: resolution rates feed back into notification significance scoring
+## Automatic Loops
+
+- Drift task guard: follow-up tasks are deduped and capped at 3 per lane per repo.
+- Attractor convergence: repos are driven toward declared target state via the attractor loop.
+- Upstream adoption checks: hub/daily eval emit tasks for lag, compatibility failures, and API/schema changes.
+- Notifications: significant findings alert via terminal/webhook/wg-notify.
+- Prompt evolution: recurring drift patterns trigger `wg evolve` to teach agents.
+- Outcome learning: resolution rates feed back into notification significance scoring.
 <!-- driftdriver-codex:end -->
