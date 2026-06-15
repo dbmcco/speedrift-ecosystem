@@ -18,11 +18,13 @@ Run: `./.workgraph/handlers/agent-error.sh --cli codex`
 ### Drift Protocol
 - Pre-check: `./.workgraph/drifts check --task <TASK_ID> --write-log`
 - Post-check: `./.workgraph/drifts check --task <TASK_ID> --write-log --create-followups`
+- Speedrift checks auto-refresh existing Driftdriver-managed repo guidance when repo state changes. Disable only for emergencies with `DRIFTDRIVER_DISABLE_SPEEDRIFT_AUTO_UPDATE=1`.
 
 ## Speedrift Ecosystem Protocol
 
 - Workgraph is the source of truth for tasks and dependencies.
 - `speedriftd` is the repo-local runtime supervisor. Interactive sessions do not own dispatch by default.
+- PlanForge handoffs should include unit tests, integration tests, UX tests or waivers, Agency usage, roborev/review obligations, bounded adversarial review, and detailed small-model-ready implementation steps.
 - Default posture is `observe`. Do not use `wg service start` as a generic way to kick off autonomous work.
 - Refresh repo runtime state before acting: `driftdriver --dir "$PWD" --json speedriftd status --refresh`
 - If the user wants background execution in this repo, arm it explicitly:
@@ -90,6 +92,7 @@ Check this before starting repo work so same-repo agents do not conflict.
 
 ## Automatic Loops
 
+- Speedrift check auto-refresh: existing managed repo guidance is refreshed when repo state changes.
 - Drift task guard: follow-up tasks are deduped and capped at 3 per lane per repo.
 - Attractor convergence: repos are driven toward declared target state via the attractor loop.
 - Upstream adoption checks: hub/daily eval emit tasks for lag, compatibility failures, and API/schema changes.
