@@ -27,6 +27,62 @@ The mess is real, but it is concentrated in a few buckets:
 | Existing cleanup archive graphs | Two `.workgraph` dirs inside `/Users/braydon/projects/archive/cleanup/**` | Review archive retention; already archived, not active |
 | Root/meta Workgraphs | `/Users/braydon/.workgraph` 16K, `/Users/braydon/projects/.workgraph` 4.7M, `/Users/braydon/projects/experiments/.workgraph` 81M | Review before removal; these may be intentional meta-graphs |
 
+## Cleanup Applied
+
+2026-06-17 central-history cleanup was applied with archive verification:
+
+- archived 26,092 old hub history snapshots into
+  `/Users/braydon/projects/archive/cleanup/2026-06-17-workgraph-central-history/archives/hub-history-older-than-30d-keep10.tar.zst`
+- archived 12,622 old factory history snapshots into
+  `/Users/braydon/projects/archive/cleanup/2026-06-17-workgraph-central-history/archives/factory-history-older-than-30d-keep10.tar.zst`
+- verified archive entry counts before deleting originals
+- wrote archive metadata to
+  `/Users/braydon/projects/archive/cleanup/2026-06-17-workgraph-central-history/metadata.json`
+- retained the 10 newest raw snapshots per repo plus recent snapshots
+
+Post-cleanup state:
+
+| Bucket | Before | After | Archive |
+| --- | ---: | ---: | ---: |
+| `ecosystem-hub/history` | 51G / about 26.8k JSON files | 2.3G / 824 JSON files | 3.2G |
+| `ecosystem-hub/factory/history` | 776M / about 13.2k JSON files | 36M / 710 JSON files | 7.0M |
+
+Repeatable command:
+
+```bash
+./scripts/cleanup_central_history.sh --execute
+```
+
+2026-06-17 conservative agent-worktree cleanup wave was also applied through
+supported `wg worktree gc --dead-only` commands:
+
+| Repo | Removed | Policy |
+| --- | ---: | --- |
+| `paia-work` | 428 | dead-only, older than 30d |
+| `paia-program` | 28 | dead-only, older than 30d, then clean dead-only older than 21d |
+| `state-system` | 37 | dead-only, older than 7d |
+| `vibez-monitor` | 1 | dead-only, older than 30d |
+| `prospecting-partner` | 1 | dead-only, older than 30d |
+| `speedrift-ecosystem` | 1 | dead-only, older than 30d |
+| `eink-sync` | 13 | dead-only, older than 30d |
+| `lfw-interview` | 1 | dead-only, older than 30d |
+| `synthyra-outreach-factory` | 3 | dead-only, older than 30d |
+| `paia-shell` | 7 | dead-only, older than 30d |
+
+Total removed in this wave: 520 dead agent worktrees.
+
+Held back deliberately:
+
+- `founder-finance`: 22 old dead worktrees, all dirty by direct `git status`;
+  needs archive/discard review.
+- `plum`: 1 old dead worktree with uncommitted changes; needs archive/discard
+  review.
+- `paia-agent-runtime`: no dead worktrees older than 7d; recent June 14-15
+  worktrees were left untouched.
+- `/Users/braydon/.config/superpowers/worktrees`: still 35G; separate review
+  lane because these are feature worktrees rather than repo-local agent
+  worktrees.
+
 ## Central Registry Findings
 
 Current central register path:
