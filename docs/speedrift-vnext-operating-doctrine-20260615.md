@@ -106,6 +106,11 @@ used.
 Use central registry route names only. Do not hardcode model IDs or provider
 credentials in plans.
 
+Current local model inventory and eval tradeoffs are tracked in
+[`local-model-routing-baseline-20260617.md`](./local-model-routing-baseline-20260617.md).
+PlanForge and Agency route changes must treat that file as the source of truth
+for PI-selectable Ollama models and removed local models.
+
 | Role | Preferred Shape |
 | --- | --- |
 | Planner | strong reasoning model |
@@ -117,6 +122,16 @@ credentials in plans.
 
 Small-model execution is allowed only when `handoff_detail_level` is high enough
 and all required fields are present.
+
+Local routing defaults:
+
+- prefer the Qwopus local route for stronger local coding, reasoning, and
+  tool-use experiments when medium latency is acceptable,
+- prefer the Gemma local route for polished local summaries and transcript notes
+  when quality matters more than latency,
+- keep existing `qwen3:8b` runtime routes until a workload-specific eval proves
+  a replacement is better enough to justify the latency,
+- do not route to removed local models.
 
 ## Drift Module Policy
 

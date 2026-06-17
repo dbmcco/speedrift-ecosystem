@@ -296,6 +296,23 @@ Always pair each metric with:
 `northstardrift` is the module that should compute these scorecards, detect regressions, and emit model-mediated follow-up prompts/tasks from them.
 Design contract: [docs/northstardrift.md](./docs/northstardrift.md)
 
+## Local Model Routing Baseline
+
+Speedrift model routing should use central route names in generated plans, but
+the current PI-selectable local-model inventory is documented for planner,
+Agency, and drift-policy work in
+[`docs/local-model-routing-baseline-20260617.md`](./docs/local-model-routing-baseline-20260617.md).
+
+Current routing posture:
+
+- use `ollama/qwopus3.6:27b-mtp-q4` for stronger local coding, reasoning, and
+  tool-use experiments when medium latency is acceptable
+- use `ollama/gemma4:26b` for polished local summaries and transcript notes
+  when quality matters more than latency
+- keep existing `qwen3:8b` runtime routes until workload-specific evals prove a
+  replacement is worth the added latency
+- do not route to removed local models
+
 ## Daemon + Endpoints
 
 Run the ecosystem daemon continuously and codify the port. The live setup is
@@ -446,6 +463,7 @@ scripts/ecosystem_hub_daemon.sh ensure-running
 From this repo:
 
 ```bash
+./scripts/verify_model_routing_policy.sh
 ./scripts/verify_ecosystem.sh
 ./scripts/public_smoke_check.sh
 ```
@@ -470,6 +488,7 @@ Ecosystem dependencies watched by the upstream sentinel:
 ## Additional Docs
 
 - [Deck index](./docs/decks/README.md)
+- [Local model routing baseline](./docs/local-model-routing-baseline-20260617.md)
 - [Northstardrift design](./docs/northstardrift.md)
 - [Known limitations](./docs/known-limitations.md)
 
