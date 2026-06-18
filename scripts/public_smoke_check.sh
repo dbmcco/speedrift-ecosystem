@@ -85,14 +85,14 @@ cleanup() {
 trap cleanup EXIT
 
 cd "$TMP_DIR"
-wg init >/dev/null
-wg add --id start-1 "Bootstrap speedrift" --description "Create first speedrift task" >/dev/null
-wg claim start-1 >/dev/null
+wg --dir .workgraph init >/dev/null
+wg --dir .workgraph add --id start-1 "Bootstrap speedrift" --description "Create first speedrift task" >/dev/null
+wg --dir .workgraph claim start-1 >/dev/null
 driftdriver install --wrapper-mode portable --with-uxdrift --with-therapydrift --with-yagnidrift --with-redrift >/dev/null
 ./.workgraph/coredrift ensure-contracts --apply >/dev/null
 ./.workgraph/drifts check --task start-1 --write-log --create-followups >/dev/null
 
-if wg show start-1 | grep -q "Coredrift:"; then
+if wg --dir .workgraph show start-1 | grep -q "Coredrift:"; then
   echo "[OK] drift check log written to task start-1"
 else
   echo "[FAIL] drift check did not produce a Coredrift log entry"

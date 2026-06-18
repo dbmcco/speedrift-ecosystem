@@ -30,6 +30,7 @@ local work.
 - **One-screen explainer:** [`docs/assets/speedrift-ecosystem-summary.svg`](./docs/assets/speedrift-ecosystem-summary.svg)
 - **Keynote-style story deck:** [Speedrift Ecosystem Story](https://dbmcco.github.io/speedrift-ecosystem/decks/speedrift-ecosystem-story.html)
 - **Local deck file:** [`docs/decks/speedrift-ecosystem-story.html`](./docs/decks/speedrift-ecosystem-story.html)
+- **vNext policy verifier:** [`scripts/verify_speedrift_vnext_policy.sh`](./scripts/verify_speedrift_vnext_policy.sh)
 
 ## Mental Model Shift
 
@@ -464,9 +465,14 @@ From this repo:
 
 ```bash
 ./scripts/verify_model_routing_policy.sh
+./scripts/verify_speedrift_vnext_policy.sh
 ./scripts/verify_ecosystem.sh
 ./scripts/public_smoke_check.sh
 ```
+
+`verify_speedrift_vnext_policy.sh` discovers the PlanForge schema from the
+workspace checkout. Set `PLANFORGE_SCHEMA_PATH=/path/to/planforge-plan-v2.schema.json`
+when running it from a different layout.
 
 ## Repo Map
 
