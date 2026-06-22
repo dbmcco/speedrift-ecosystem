@@ -11,13 +11,29 @@ Workgraph upstream `origin/main` has been reviewed and merged locally for the PI
 - Installed CLI: `cargo install --path . --locked --force` replaced `wg` and `nex` with the merged `worksgood` package.
 - Speedrift sentinel: Driftdriver now tracks the adopted Workgraph ref as the local integration branch until it is pushed/merged back to `fork/main`.
 
-## What Upstream Added
+## What Upstream Main Added
 
-The PI-related upstream change is a design bundle, not production handler code:
+The PI-related upstream change merged to `origin/main` is a design bundle:
 
 - `docs/pi-integration/executor-research.md`
 - `docs/pi-integration/model-mgmt-research.md`
 - `docs/pi-integration/integration-plan.md`
+
+After this note was first written, we found active upstream PI implementation
+branches that are not yet merged to `origin/main`. The downstream adoption plan
+must include those branches:
+
+- `origin/wg/agent-5483/pi-impl-p0-executor-kind`
+- `origin/wg/agent-5508/pi-plugin-impl-profile`
+- `origin/wg/agent-5509/pi-plugin-impl-package`
+- `origin/wg/agent-5510/pi-plugin-impl-terminal-host-trait`
+- `origin/wg/agent-5484/pi-impl-p5-upstream-patch`
+- `origin/wg/agent-5499/pi-plugin-replan`
+
+Do not broad-merge these branches into the downstream integration branch. They
+were cut from moving bases and raw branch diffs show large unrelated deletions.
+Adopt the PI implementation commits selectively and preserve current downstream
+provider-failover and Speedrift compatibility work.
 
 The plan recommends an additive PI integration:
 
